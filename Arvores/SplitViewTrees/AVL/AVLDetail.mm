@@ -62,7 +62,16 @@ CGFloat NODE_SPACING;
     NODE_HEIGHT = NODE_HEIGHT_REGULAR;
     NODE_SPACING = NODE_SPACING_REGULAR;
     
+    UITapGestureRecognizer * showMasterRecognizer=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showMaster:)];
+    [self.view addGestureRecognizer:showMasterRecognizer];
+    
 }
+
+- (void)showMaster:(UITapGestureRecognizer*)sender {
+    
+    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
+}
+
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {

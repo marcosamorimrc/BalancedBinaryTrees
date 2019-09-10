@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AVLMaster : UIViewController
 
+@property (weak, nonatomic) IBOutlet UILabel *lblTree;
+@property (weak, nonatomic) IBOutlet UIView *contentView;
+
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
 @property (weak, nonatomic) IBOutlet UITextField *txtInsert;
 @property (weak, nonatomic) IBOutlet UITextField *txtRandomTree;

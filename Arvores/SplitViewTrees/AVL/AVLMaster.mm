@@ -23,6 +23,11 @@
 
     BOOL isFirstTimeAppearing;
     
+    CGFloat CONTENT_VIEW_Y;
+    CGFloat CONTENT_VIEW_HEIGHT;
+    CGFloat CONTENT_VIEW_Y_SMALL;
+    CGFloat CONTENT_VIEW_HEIGHT_SMALL;
+    
 }
 @end
 
@@ -34,6 +39,18 @@
     
     UITapGestureRecognizer *HideKeyboardTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
     [self.view addGestureRecognizer:HideKeyboardTapRecognizer];
+    
+    CONTENT_VIEW_Y_SMALL = 75;
+    CONTENT_VIEW_HEIGHT_SMALL = 230;
+    
+    if (self.view.frame.size.height <= 500) {
+        CGRect frame = CGRectMake(_contentView.frame.origin.x, 75, _contentView.frame.size.width, 240);
+        _contentView.frame = frame;
+        
+        CONTENT_VIEW_Y_SMALL = 12;
+        CONTENT_VIEW_HEIGHT_SMALL = 220;
+        
+    }
     
     _btnSearch.layer.cornerRadius = 6;
     _btnInsert.layer.cornerRadius = 6;
@@ -48,6 +65,18 @@
     
     isFirstTimeAppearing = true;
     
+    self.navigationController.navigationBar.hidden = true;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidHide:)
+                                                 name:UIKeyboardDidHideNotification
+                                               object:nil];
+    
 }
 
 
@@ -55,6 +84,8 @@
     
     if (isFirstTimeAppearing) {
         self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
+        CONTENT_VIEW_Y = _contentView.frame.origin.y;
+        CONTENT_VIEW_HEIGHT = _contentView.frame.size.height;
         isFirstTimeAppearing = false;
     }
     
@@ -65,6 +96,39 @@
     [_txtSearch resignFirstResponder];
     [_txtInsert resignFirstResponder];
     [_txtRandomTree resignFirstResponder];
+}
+
+- (void)keyboardWillShow: (NSNotification *) notif{
+    
+    CGRect frame = CGRectMake(_contentView.frame.origin.x, CONTENT_VIEW_Y_SMALL, _contentView.frame.size.width, CONTENT_VIEW_HEIGHT_SMALL);
+    
+    if (self.view.frame.size.height <= 500) {
+        _lblTree.hidden = true;
+        _btnUndo.hidden = true;
+        _btnInfo.hidden = true;
+        _btnDeleteTree.hidden = true;
+    }
+    
+    [UIView animateWithDuration:0.5f animations:^{
+        self->_contentView.frame = frame;
+    }];
+    
+}
+
+- (void)keyboardDidHide: (NSNotification *) notif{
+    
+    CGRect frame = CGRectMake(_contentView.frame.origin.x, CONTENT_VIEW_Y, _contentView.frame.size.width, CONTENT_VIEW_HEIGHT);
+    [UIView animateWithDuration:0.5f animations:^{
+        self->_contentView.frame = frame;
+    }];
+    
+    if (self.view.frame.size.height <= 500) {
+        _lblTree.hidden = false;
+        _btnUndo.hidden = false;
+        _btnInfo.hidden = false;
+        _btnDeleteTree.hidden = false;
+    }
+    
 }
 
 - (void)EnableUndoButton{
@@ -86,6 +150,8 @@
     return true;
 }
 
+
+
 - (IBAction)btnSearch:(id)sender {
     
     [self hideKeyboard:nil];
@@ -94,8 +160,6 @@
     _txtSearch.text = @"";
     
     if (value > 0) {
-    
-        self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
         
         if (self.splitViewController.viewControllers.count > 1) {
             _btnSearch.tag = value;
@@ -127,14 +191,12 @@
 - (IBAction)btnInsert:(id)sender {
     
     
-    [self hideKeyboard:nil];
+//    [self hideKeyboard:nil];
     
     int value = [_txtInsert.text integerValue];
     _txtInsert.text = @"";
     
     if (value > 0) {
-    
-        self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
         
         if (self.splitViewController.viewControllers.count > 1) {
             _btnInsert.tag = value;
@@ -172,9 +234,8 @@
     
     if (value > 0) {
         
-        self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
-        
         if (self.splitViewController.viewControllers.count > 1) {
+            self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
             _btnRandomTree.tag = value;
             AVLDetail *detail = self.splitViewController.viewControllers.lastObject;
             [detail performSelector:@selector(GenerateRandomTree:) withObject:sender];
