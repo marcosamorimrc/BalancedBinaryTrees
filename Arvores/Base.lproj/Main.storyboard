@@ -785,17 +785,17 @@
         <!--Detail-->
         <scene sceneID="EU6-DC-htf">
             <objects>
-                <viewController id="lJY-AL-0jd" customClass="AVLDetail" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AVLDetail" id="lJY-AL-0jd" customClass="AVLDetail" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="EUn-6w-6oB">
                         <rect key="frame" x="0.0" y="0.0" width="703.5" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Svf-Kg-Fkd">
-                                <rect key="frame" x="0.0" y="70" width="700" height="698"/>
+                                <rect key="frame" x="0.0" y="70" width="699" height="698"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0IP-MJ-Iny">
-                                        <rect key="frame" x="0.0" y="0.0" width="700" height="698"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="699" height="698"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </view>
                                 </subviews>

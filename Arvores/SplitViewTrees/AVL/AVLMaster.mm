@@ -19,8 +19,9 @@
 #include "Hash.h"
 #include "Heap.h"
 
-@interface AVLMaster ()<UITextFieldDelegate>{
-
+@interface AVLMaster ()<UITextFieldDelegate, UISplitViewControllerDelegate>{
+    
+    
     BOOL isFirstTimeAppearing;
     
     CGFloat CONTENT_VIEW_Y;
@@ -29,6 +30,10 @@
     CGFloat CONTENT_VIEW_HEIGHT_SMALL;
     
 }
+
+
+@property (strong) AVLDetail *AVLDetailViewController;
+
 @end
 
 @implementation AVLMaster
@@ -78,6 +83,26 @@
                                                object:nil];
     
 }
+
+- (void)awakeFromNib{
+    [super awakeFromNib];
+    
+    self.splitViewController.delegate = self;
+    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    _AVLDetailViewController = (AVLDetail *)[storyboard instantiateViewControllerWithIdentifier:@"AVLDetail"];
+}
+
+- (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController{
+    
+    if([splitViewController.navigationController.viewControllers.lastObject isEqual:self]){
+        return false;
+    }else{
+        return true;
+    }
+}
+
 
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -146,7 +171,7 @@
     if (textField == _txtRandomTree) {
         [_btnRandomTree sendActionsForControlEvents:UIControlEventTouchUpInside];
     }
-
+    
     return true;
 }
 
@@ -165,6 +190,15 @@
             _btnSearch.tag = value;
             AVLDetail *detail = self.splitViewController.viewControllers.lastObject;
             [detail performSelector:@selector(SearchNode:) withObject:sender];
+            
+        }else{
+            if ([self.navigationController.viewControllers.lastObject isEqual:self]) {
+                
+                _btnSearch.tag = value;
+                [_AVLDetailViewController performSelector:@selector(SearchNode:) withObject:sender];
+                [self.navigationController pushViewController:_AVLDetailViewController animated:true];
+                
+            }
         }
         
         
@@ -191,7 +225,7 @@
 - (IBAction)btnInsert:(id)sender {
     
     
-//    [self hideKeyboard:nil];
+    //    [self hideKeyboard:nil];
     
     int value = [_txtInsert.text integerValue];
     _txtInsert.text = @"";
@@ -203,7 +237,15 @@
             AVLDetail *detail = self.splitViewController.viewControllers.lastObject;
             [detail performSelector:@selector(InsertNode:) withObject:sender];
         }
-        
+        else{
+            if ([self.navigationController.viewControllers.lastObject isEqual:self]) {
+                
+                _btnInsert.tag = value;
+                [_AVLDetailViewController performSelector:@selector(InsertNode:) withObject:sender];
+                [self.navigationController pushViewController:_AVLDetailViewController animated:true];
+                
+            }
+        }
         
     }else{
         
@@ -240,6 +282,14 @@
             AVLDetail *detail = self.splitViewController.viewControllers.lastObject;
             [detail performSelector:@selector(GenerateRandomTree:) withObject:sender];
             _btnUndo.enabled = true;
+        }else{
+            if ([self.navigationController.viewControllers.lastObject isEqual:self]) {
+                
+                _btnRandomTree.tag = value;
+                [_AVLDetailViewController performSelector:@selector(GenerateRandomTree:) withObject:sender];
+                [self.navigationController pushViewController:_AVLDetailViewController animated:true];
+                
+            }
         }
         
         
@@ -279,7 +329,7 @@
         AVLDetail *detail = self.splitViewController.viewControllers.lastObject;
         [detail performSelector:@selector(showTreeInfo) withObject:nil];
     }
-
+    
 }
 
 - (IBAction)btnDeleteTree:(id)sender {

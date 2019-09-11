@@ -25,6 +25,8 @@
 AVLTree<TreeNode> tree;
 AVLTree<TreeNode> previousTree;
 
+BOOL isFirstTimeAppearing;
+    
 NSMutableArray *InfoViews;
 
 CGFloat NODE_WIDTH;
@@ -52,6 +54,8 @@ CGFloat NODE_SPACING;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    isFirstTimeAppearing = true;
+    
     InfoViews = [[NSMutableArray alloc] init];
     
     _treeScrollView.delegate = self;
@@ -64,6 +68,16 @@ CGFloat NODE_SPACING;
     
     UITapGestureRecognizer * showMasterRecognizer=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showMaster:)];
     [self.view addGestureRecognizer:showMasterRecognizer];
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    
+    if (isFirstTimeAppearing) {
+        isFirstTimeAppearing = false;
+        
+        [self updateTree];
+    }
     
 }
 
@@ -494,6 +508,51 @@ CGFloat NODE_SPACING;
     return node;
 }
 
+-(void) updateTree{
+    
+    _treeScrollView.zoomScale = 1;
+
+    for (UIView *view in _treeZoomSubView.subviews) {
+        [view removeFromSuperview];
+    }
+    
+    BinNode<TreeNode, compare_to<TreeNode>>*root = tree.GetRoot();
+    
+    int h = tree.Height(root);
+    int size = tree.Size(root);
+    
+    if (h > 4) {
+        if (h> 5) {
+            NODE_WIDTH = NODE_WIDTH_SMALLEST;
+            NODE_HEIGHT = NODE_HEIGHT_SMALLEST;
+            NODE_SPACING = NODE_SPACING_SMALLEST;
+        }else{
+            NODE_WIDTH = NODE_WIDTH_SMALL;
+            NODE_HEIGHT = NODE_HEIGHT_SMALL;
+            NODE_SPACING = NODE_SPACING_SMALL;
+        }
+    }else{
+        NODE_WIDTH = NODE_WIDTH_REGULAR;
+        NODE_HEIGHT = NODE_HEIGHT_REGULAR;
+        NODE_SPACING = NODE_SPACING_REGULAR;
+    }
+    
+    CGFloat width = NODE_WIDTH*(pow(2, h));
+    CGFloat height = (NODE_HEIGHT + NODE_SPACING)*(h+1);
+    
+    _treeScrollView.contentSize = CGSizeMake(MAX(width, _treeScrollView.frame.size.width), MAX(height, _treeScrollView.frame.size.height));
+    _treeZoomSubView.frame = CGRectMake(0, 0, MAX(width, _treeScrollView.frame.size.width), MAX(height, _treeScrollView.frame.size.height));
+    
+    if (_treeScrollView.contentSize.width > _treeScrollView.frame.size.width) {
+        _treeScrollView.contentOffset = CGPointMake((_treeScrollView.contentSize.width-_treeScrollView.frame.size.width)/2, 0);
+    }
+    
+    CGRect frame = CGRectMake(0, 0, _treeScrollView.contentSize.width, NODE_HEIGHT + NODE_SPACING);
+    
+    [self drawTree:*root];
+    
+}
+
 -(void)drawTree:(BinNode<TreeNode, compare_to<TreeNode>>)root{
     
     CGRect frame = CGRectMake(0, 0, _treeScrollView.contentSize.width, NODE_HEIGHT + NODE_SPACING);
@@ -676,6 +735,40 @@ CGFloat NODE_SPACING;
         shapeLayer.lineWidth = 4;
         shapeLayer.strokeColor = [UIColor greenColor].CGColor;
         [view.layer addSublayer:shapeLayer];
+    }
+    
+}
+
+-(void) printTreeInOrder{
+    
+    BinNode<TreeNode, compare_to<TreeNode>>*root = tree.GetRoot();
+    
+    NSArray *tmp = [self getArrayOfDataInOrder:*root];
+    
+}
+
+-(NSArray *)getArrayOfDataInOrder:(BinNode<TreeNode, compare_to<TreeNode>>)root{
+    
+    if(  root.GetElement() == NULL){
+        return [[NSArray alloc] init];
+    }else{
+        
+        NSMutableArray *nodeArray = [[NSMutableArray alloc] init];
+        
+        if(  root.GetLeft()->GetElement() != NULL ){
+            [nodeArray addObjectsFromArray:[self getArrayOfDataInOrder:*root.GetLeft()]];
+        }
+        
+        NSNumber *data = [NSNumber numberWithInteger:root.GetElement().getData()];
+        [nodeArray addObject:data];
+        
+        if(  root.GetRight()->GetElement() != NULL ){
+            [nodeArray addObjectsFromArray:[self getArrayOfDataInOrder:*root.GetRight()]];
+        }
+        
+        NSLog(@"teste nodes : %@", nodeArray);
+        return [[NSArray alloc] initWithArray:nodeArray];
+        
     }
     
 }
