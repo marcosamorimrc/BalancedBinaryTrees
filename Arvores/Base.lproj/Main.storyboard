@@ -791,27 +791,36 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Svf-Kg-Fkd">
-                                <rect key="frame" x="0.0" y="70" width="699" height="698"/>
+                                <rect key="frame" x="0.0" y="16" width="698" height="752"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0IP-MJ-Iny">
-                                        <rect key="frame" x="0.0" y="0.0" width="699" height="698"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="698" height="752"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </view>
                                 </subviews>
                             </scrollView>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5HF-0n-g4r">
+                                <rect key="frame" x="8" y="16" width="60" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Voltar"/>
+                                <connections>
+                                    <action selector="btnBack:" destination="lJY-AL-0jd" eventType="touchUpInside" id="JOs-gV-dAf"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="UEG-yN-5Pi"/>
                     </view>
                     <connections>
+                        <outlet property="btnBack" destination="5HF-0n-g4r" id="PvJ-aA-PH1"/>
                         <outlet property="treeScrollView" destination="Svf-Kg-Fkd" id="0iv-AK-3j5"/>
                         <outlet property="treeZoomSubView" destination="0IP-MJ-Iny" id="ypy-HB-Jzb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="buX-G6-5xI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="968" y="-995"/>
+            <point key="canvasLocation" x="967.96874999999989" y="-995.3125"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="39y-pd-acx">

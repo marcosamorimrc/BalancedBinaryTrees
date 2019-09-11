@@ -195,8 +195,8 @@
             if ([self.navigationController.viewControllers.lastObject isEqual:self]) {
                 
                 _btnSearch.tag = value;
-                [_AVLDetailViewController performSelector:@selector(SearchNode:) withObject:sender];
                 [self.navigationController pushViewController:_AVLDetailViewController animated:true];
+                [_AVLDetailViewController performSelector:@selector(SearchNode:) withObject:sender];
                 
             }
         }
@@ -231,6 +231,8 @@
     _txtInsert.text = @"";
     
     if (value > 0) {
+        
+        _btnUndo.enabled = true;
         
         if (self.splitViewController.viewControllers.count > 1) {
             _btnInsert.tag = value;
@@ -276,6 +278,8 @@
     
     if (value > 0) {
         
+        _btnUndo.enabled = true;
+        
         if (self.splitViewController.viewControllers.count > 1) {
             self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
             _btnRandomTree.tag = value;
@@ -319,6 +323,11 @@
         _btnUndo.enabled = false;
         AVLDetail *detail = self.splitViewController.viewControllers.lastObject;
         [detail performSelector:@selector(UndoChanges) withObject:nil];
+    }else{
+        if ([self.navigationController.viewControllers.lastObject isEqual:self]) {
+            [_AVLDetailViewController performSelector:@selector(UndoChanges) withObject:sender];
+            [self.navigationController pushViewController:_AVLDetailViewController animated:true];
+        }
     }
     
 }
@@ -328,6 +337,11 @@
     if (self.splitViewController.viewControllers.count > 1) {
         AVLDetail *detail = self.splitViewController.viewControllers.lastObject;
         [detail performSelector:@selector(showTreeInfo) withObject:nil];
+    }else{
+        if ([self.navigationController.viewControllers.lastObject isEqual:self]) {
+            [self.navigationController pushViewController:_AVLDetailViewController animated:true];
+            [_AVLDetailViewController performSelector:@selector(showTreeInfo) withObject:sender];
+        }
     }
     
 }
@@ -337,6 +351,11 @@
     if (self.splitViewController.viewControllers.count > 1) {
         AVLDetail *detail = self.splitViewController.viewControllers.lastObject;
         [detail performSelector:@selector(deleteTree) withObject:nil];
+    }else{
+        if ([self.navigationController.viewControllers.lastObject isEqual:self]) {
+            [self.navigationController pushViewController:_AVLDetailViewController animated:true];
+            [_AVLDetailViewController performSelector:@selector(deleteTree) withObject:sender];
+        }
     }
 }
 

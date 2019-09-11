@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AVLDetail : UIViewController
 
+@property (weak, nonatomic) IBOutlet UIButton *btnBack;
+
 @property (weak, nonatomic) IBOutlet UIScrollView *treeScrollView;
 @property (weak, nonatomic) IBOutlet UIView *treeZoomSubView;
 
@@ -22,7 +24,6 @@ NS_ASSUME_NONNULL_BEGIN
 -(IBAction)UndoChanges;
 -(void)deleteTree;
 
--(void)printTreeInOrder;
 
 @end
 

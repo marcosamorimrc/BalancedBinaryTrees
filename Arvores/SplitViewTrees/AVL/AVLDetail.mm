@@ -62,12 +62,18 @@ CGFloat NODE_SPACING;
     _treeScrollView.maximumZoomScale = 4;
     _treeScrollView.minimumZoomScale = 0.03;
     
+    _btnBack.layer.cornerRadius = 6;
+    
     NODE_WIDTH = NODE_WIDTH_REGULAR;
     NODE_HEIGHT = NODE_HEIGHT_REGULAR;
     NODE_SPACING = NODE_SPACING_REGULAR;
     
     UITapGestureRecognizer * showMasterRecognizer=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showMaster:)];
     [self.view addGestureRecognizer:showMasterRecognizer];
+    
+    if (self.splitViewController.viewControllers.count > 1) {
+        _btnBack.hidden = true;
+    }
     
 }
 
@@ -86,6 +92,11 @@ CGFloat NODE_SPACING;
     self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
 }
 
+- (IBAction)btnBack:(id)sender {
+    
+    [self.navigationController popViewControllerAnimated:true];
+    
+}
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
@@ -360,6 +371,7 @@ CGFloat NODE_SPACING;
 
 -(void)deleteTree{
     
+    previousTree = tree;
     tree.MakeEmpty();
     
     for (UIView *view in _treeZoomSubView.subviews) {
