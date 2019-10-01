@@ -42,6 +42,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    [[self.tabBarController.tabBar.items objectAtIndex:0] setTitle:@"AVL"];
+    [[self.tabBarController.tabBar.items objectAtIndex:1] setTitle:@"RB"];
+    [[self.tabBarController.tabBar.items objectAtIndex:2] setTitle:@"AA"];
+    [[self.tabBarController.tabBar.items objectAtIndex:3] setTitle:@"SPLAY"];
+    
     UITapGestureRecognizer *HideKeyboardTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
     [self.view addGestureRecognizer:HideKeyboardTapRecognizer];
     
