@@ -17,6 +17,18 @@
 		E71217062176789A00C18AD3 /* ArvoresUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = E71217052176789A00C18AD3 /* ArvoresUITests.m */; };
 		E712177121767AF100C18AD3 /* Teste.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E712176F21767AF100C18AD3 /* Teste.cpp */; };
 		E769E46622148EBD006ECFEF /* SplayVC.mm in Sources */ = {isa = PBXBuildFile; fileRef = E769E46522148EBD006ECFEF /* SplayVC.mm */; };
+		E77033B123566E6B00AEF39B /* Gotham-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = E77033A723566E6900AEF39B /* Gotham-Medium.otf */; };
+		E77033B223566E6B00AEF39B /* Uni Sans Heavy Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = E77033A823566E6A00AEF39B /* Uni Sans Heavy Italic.otf */; };
+		E77033B323566E6B00AEF39B /* Uni Sans Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = E77033A923566E6A00AEF39B /* Uni Sans Regular.otf */; };
+		E77033B423566E6B00AEF39B /* Uni Sans Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E77033AA23566E6A00AEF39B /* Uni Sans Bold.otf */; };
+		E77033B523566E6B00AEF39B /* Gotham-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = E77033AB23566E6A00AEF39B /* Gotham-Light.otf */; };
+		E77033B623566E6B00AEF39B /* Gotham-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E77033AC23566E6A00AEF39B /* Gotham-Bold.otf */; };
+		E77033B723566E6B00AEF39B /* Uni Sans Book.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E77033AD23566E6A00AEF39B /* Uni Sans Book.ttf */; };
+		E77033B823566E6B00AEF39B /* Uni Sans Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = E77033AE23566E6A00AEF39B /* Uni Sans Thin.otf */; };
+		E77033B923566E6B00AEF39B /* Uni Sans Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = E77033AF23566E6A00AEF39B /* Uni Sans Heavy.otf */; };
+		E77033BA23566E6B00AEF39B /* Uni Sans Thin Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = E77033B023566E6A00AEF39B /* Uni Sans Thin Italic.otf */; };
+		E77033BE235A577D00AEF39B /* RedBlackMaster.mm in Sources */ = {isa = PBXBuildFile; fileRef = E77033BD235A577D00AEF39B /* RedBlackMaster.mm */; };
+		E77033C1235A57DC00AEF39B /* RedBlackDetail.mm in Sources */ = {isa = PBXBuildFile; fileRef = E77033C0235A57DC00AEF39B /* RedBlackDetail.mm */; };
 		E772262B2198D53600DADFA2 /* NodeXib.xib in Resources */ = {isa = PBXBuildFile; fileRef = E772262A2198D53600DADFA2 /* NodeXib.xib */; };
 		E772262E2198D99E00DADFA2 /* NodeXib.m in Sources */ = {isa = PBXBuildFile; fileRef = E772262D2198D99E00DADFA2 /* NodeXib.m */; };
 		E77F1906231472DD004AA211 /* InfoXib.xib in Resources */ = {isa = PBXBuildFile; fileRef = E77F1905231472DD004AA211 /* InfoXib.xib */; };
@@ -66,6 +78,20 @@
 		E712177021767AF100C18AD3 /* Teste.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Teste.hpp; sourceTree = "<group>"; };
 		E769E46422148EBD006ECFEF /* SplayVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SplayVC.h; sourceTree = "<group>"; };
 		E769E46522148EBD006ECFEF /* SplayVC.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SplayVC.mm; sourceTree = "<group>"; };
+		E77033A723566E6900AEF39B /* Gotham-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gotham-Medium.otf"; sourceTree = "<group>"; };
+		E77033A823566E6A00AEF39B /* Uni Sans Heavy Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Uni Sans Heavy Italic.otf"; sourceTree = "<group>"; };
+		E77033A923566E6A00AEF39B /* Uni Sans Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Uni Sans Regular.otf"; sourceTree = "<group>"; };
+		E77033AA23566E6A00AEF39B /* Uni Sans Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Uni Sans Bold.otf"; sourceTree = "<group>"; };
+		E77033AB23566E6A00AEF39B /* Gotham-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gotham-Light.otf"; sourceTree = "<group>"; };
+		E77033AC23566E6A00AEF39B /* Gotham-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gotham-Bold.otf"; sourceTree = "<group>"; };
+		E77033AD23566E6A00AEF39B /* Uni Sans Book.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Uni Sans Book.ttf"; sourceTree = "<group>"; };
+		E77033AE23566E6A00AEF39B /* Uni Sans Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Uni Sans Thin.otf"; sourceTree = "<group>"; };
+		E77033AF23566E6A00AEF39B /* Uni Sans Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Uni Sans Heavy.otf"; sourceTree = "<group>"; };
+		E77033B023566E6A00AEF39B /* Uni Sans Thin Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Uni Sans Thin Italic.otf"; sourceTree = "<group>"; };
+		E77033BC235A577D00AEF39B /* RedBlackMaster.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RedBlackMaster.h; sourceTree = "<group>"; };
+		E77033BD235A577D00AEF39B /* RedBlackMaster.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RedBlackMaster.mm; sourceTree = "<group>"; };
+		E77033BF235A57DC00AEF39B /* RedBlackDetail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RedBlackDetail.h; sourceTree = "<group>"; };
+		E77033C0235A57DC00AEF39B /* RedBlackDetail.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RedBlackDetail.mm; sourceTree = "<group>"; };
 		E772262A2198D53600DADFA2 /* NodeXib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NodeXib.xib; sourceTree = "<group>"; };
 		E772262C2198D99E00DADFA2 /* NodeXib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodeXib.h; sourceTree = "<group>"; };
 		E772262D2198D99E00DADFA2 /* NodeXib.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NodeXib.m; sourceTree = "<group>"; };
@@ -181,6 +207,7 @@
 		E71216E02176789700C18AD3 /* Arvores */ = {
 			isa = PBXGroup;
 			children = (
+				E77033A623566E5A00AEF39B /* Fonts */,
 				E7FACE94219115AF00A1DBEA /* include */,
 				E77226292198D51200DADFA2 /* NodeXib */,
 				E77F190423147228004AA211 /* InfoXib */,
@@ -219,6 +246,34 @@
 			path = ArvoresUITests;
 			sourceTree = "<group>";
 		};
+		E77033A623566E5A00AEF39B /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				E77033AC23566E6A00AEF39B /* Gotham-Bold.otf */,
+				E77033AB23566E6A00AEF39B /* Gotham-Light.otf */,
+				E77033A723566E6900AEF39B /* Gotham-Medium.otf */,
+				E77033AA23566E6A00AEF39B /* Uni Sans Bold.otf */,
+				E77033AD23566E6A00AEF39B /* Uni Sans Book.ttf */,
+				E77033A823566E6A00AEF39B /* Uni Sans Heavy Italic.otf */,
+				E77033AF23566E6A00AEF39B /* Uni Sans Heavy.otf */,
+				E77033A923566E6A00AEF39B /* Uni Sans Regular.otf */,
+				E77033B023566E6A00AEF39B /* Uni Sans Thin Italic.otf */,
+				E77033AE23566E6A00AEF39B /* Uni Sans Thin.otf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		E77033BB235A574200AEF39B /* RedBlack */ = {
+			isa = PBXGroup;
+			children = (
+				E77033BC235A577D00AEF39B /* RedBlackMaster.h */,
+				E77033BD235A577D00AEF39B /* RedBlackMaster.mm */,
+				E77033BF235A57DC00AEF39B /* RedBlackDetail.h */,
+				E77033C0235A57DC00AEF39B /* RedBlackDetail.mm */,
+			);
+			path = RedBlack;
+			sourceTree = "<group>";
+		};
 		E77226292198D51200DADFA2 /* NodeXib */ = {
 			isa = PBXGroup;
 			children = (
@@ -243,6 +298,7 @@
 			isa = PBXGroup;
 			children = (
 				E77F1914231F0D15004AA211 /* AVL */,
+				E77033BB235A574200AEF39B /* RedBlack */,
 			);
 			path = SplitViewTrees;
 			sourceTree = "<group>";
@@ -432,10 +488,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E77033B823566E6B00AEF39B /* Uni Sans Thin.otf in Resources */,
+				E77033B123566E6B00AEF39B /* Gotham-Medium.otf in Resources */,
+				E77033B723566E6B00AEF39B /* Uni Sans Book.ttf in Resources */,
+				E77033B423566E6B00AEF39B /* Uni Sans Bold.otf in Resources */,
 				E71216EE2176789A00C18AD3 /* LaunchScreen.storyboard in Resources */,
+				E77033B223566E6B00AEF39B /* Uni Sans Heavy Italic.otf in Resources */,
+				E77033B523566E6B00AEF39B /* Gotham-Light.otf in Resources */,
+				E77033B923566E6B00AEF39B /* Uni Sans Heavy.otf in Resources */,
 				E77F1906231472DD004AA211 /* InfoXib.xib in Resources */,
+				E77033B623566E6B00AEF39B /* Gotham-Bold.otf in Resources */,
 				E772262B2198D53600DADFA2 /* NodeXib.xib in Resources */,
+				E77033BA23566E6B00AEF39B /* Uni Sans Thin Italic.otf in Resources */,
 				E71216EB2176789A00C18AD3 /* Assets.xcassets in Resources */,
+				E77033B323566E6B00AEF39B /* Uni Sans Regular.otf in Resources */,
 				E71216E92176789700C18AD3 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -467,8 +533,10 @@
 				E772262E2198D99E00DADFA2 /* NodeXib.m in Sources */,
 				E77F191023187B05004AA211 /* AVLMaster.mm in Sources */,
 				E7F01C1C21A48EF400927DAE /* AA.mm in Sources */,
+				E77033C1235A57DC00AEF39B /* RedBlackDetail.mm in Sources */,
 				E7F01C2221A4963500927DAE /* UITabBarController+TabBar.m in Sources */,
 				E7F01C1F21A491A100927DAE /* RedBlackVC.mm in Sources */,
+				E77033BE235A577D00AEF39B /* RedBlackMaster.mm in Sources */,
 				E77F191323187B25004AA211 /* AVLDetail.mm in Sources */,
 				E71216F12176789A00C18AD3 /* main.m in Sources */,
 				E71216E32176789700C18AD3 /* AppDelegate.m in Sources */,

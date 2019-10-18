@@ -10,6 +10,7 @@
 #import "AVLMaster.h"
 #import "NodeXib.h"
 #import "InfoXib.h"
+#import "AppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
 
 #include "AVLTree.h"
@@ -84,7 +85,28 @@ CGFloat NODE_SPACING;
         
         [self updateTree];
     }
+    [self checkIfTreeIsGenerated];
+}
+
+-(void) checkIfTreeIsGenerated{
     
+    BinNode<TreeNode, compare_to<TreeNode>>*root = tree.GetRoot();
+    
+    int size = tree.Size(root);
+    
+    if (size <= 0) {
+        
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        if ([appDelegate.nodeArray count] > 0) {
+            
+            for (int i = 0; i < appDelegate.nodeArray.count; i++) {
+                tree.Insert([appDelegate.nodeArray[i] integerValue]);
+            }
+            [self updateTree];
+            
+        }
+    }
 }
 
 - (void)showMaster:(UITapGestureRecognizer*)sender {
@@ -178,11 +200,18 @@ CGFloat NODE_SPACING;
     
     _treeScrollView.zoomScale = 1;
     
+    BinNode<TreeNode, compare_to<TreeNode>>*oldRoot = tree.GetRoot();
+    int oldHeight = tree.Height(oldRoot);
+    
     int value = sender.tag;
     previousTree = tree;
     tree.Insert(value);
     
-    NSLog(@"TESTE SELECTOR INSERT : %d", value);
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if ([appDelegate.nodeArray count] > 0 || oldHeight <= 0) {
+        [appDelegate.nodeArray addObject:[NSNumber numberWithInteger:value]];
+    }
+    
     
     for (UIView *view in _treeZoomSubView.subviews) {
         [view removeFromSuperview];
@@ -251,6 +280,9 @@ CGFloat NODE_SPACING;
         }
     }
     
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    appDelegate.nodeArray = nodeArray;
+    
     BinNode<TreeNode, compare_to<TreeNode>>*root = tree.GetRoot();
     
     int h = tree.Height(root);
@@ -292,6 +324,9 @@ CGFloat NODE_SPACING;
     for (UIView *view in _treeZoomSubView.subviews) {
         [view removeFromSuperview];
     }
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate.nodeArray removeAllObjects];
     
     BinNode<TreeNode, compare_to<TreeNode>>*root = tree.GetRoot();
     
@@ -374,6 +409,9 @@ CGFloat NODE_SPACING;
     previousTree = tree;
     tree.MakeEmpty();
     
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate.nodeArray removeAllObjects];
+    
     for (UIView *view in _treeZoomSubView.subviews) {
         [view removeFromSuperview];
     }
@@ -385,6 +423,9 @@ CGFloat NODE_SPACING;
     _treeScrollView.zoomScale = 1;
     
     tree.Remove(value);
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate.nodeArray removeAllObjects];
     
     for (UIView *view in _treeZoomSubView.subviews) {
         [view removeFromSuperview];

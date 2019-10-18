@@ -88,7 +88,7 @@ class BinNode
 /// returns node balance.
     int GetBalance () const { return this->BalancingInfo; }
 
-/// returns node size.
+    /// retur*ns node size.
     int GetSize () const { return this->Size; }
 
 /// operator <.  

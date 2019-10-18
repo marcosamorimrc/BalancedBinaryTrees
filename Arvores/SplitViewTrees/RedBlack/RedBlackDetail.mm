@@ -1,16 +1,17 @@
 //
-//  AA.mm
+//  TesteDetail.m
 //  Arvores
 //
-//  Created by Marcos Amorim on 20/11/18.
-//  Copyright © 2018 Marcos Amorim. All rights reserved.
+//  Created by Marcos Amorim on 29/08/19.
+//  Copyright © 2019 Marcos Amorim. All rights reserved.
 //
 
-#import "RedBlackVC.h"
+#import "RedBlackDetail.h"
+#import "RedBlackMaster.h"
 #import "NodeXib.h"
 #import "InfoXib.h"
-#import <QuartzCore/QuartzCore.h>
 #import "AppDelegate.h"
+#import <QuartzCore/QuartzCore.h>
 
 #include "RedBlack.h"
 #include "utlIterate.h"
@@ -20,18 +21,20 @@
 #include "Hash.h"
 #include "Heap.h"
 
-@interface RedBlackVC() <UIScrollViewDelegate> {
+@interface RedBlackDetail () <UIScrollViewDelegate>{
     
     RedBlackTree<TreeNode> tree;
     RedBlackTree<TreeNode> previousTree;
+    
+    BOOL isFirstTimeAppearing;
     
     NSMutableArray *InfoViews;
     
     CGFloat NODE_WIDTH;
     CGFloat NODE_HEIGHT;
     CGFloat NODE_SPACING;
+    
 }
-
 @end
 
 #define NODE_WIDTH_REGULAR 72
@@ -46,38 +49,42 @@
 #define NODE_HEIGHT_SMALLEST 15
 #define NODE_SPACING_SMALLEST 21
 
-@implementation RedBlackVC
-
+@implementation RedBlackDetail
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    // Do any additional setup after loading the view.
     
-    UITapGestureRecognizer *HideKeyboardTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
-    [self.view addGestureRecognizer:HideKeyboardTapRecognizer];
+    isFirstTimeAppearing = true;
     
     InfoViews = [[NSMutableArray alloc] init];
     
     _treeScrollView.delegate = self;
     _treeScrollView.maximumZoomScale = 4;
-    _treeScrollView.minimumZoomScale = 0.3;
+    _treeScrollView.minimumZoomScale = 0.03;
     
-    _btnSearch.layer.cornerRadius = 6;
-    _btnInsert.layer.cornerRadius = 6;
-    _btnRandomTree.layer.cornerRadius = 6;
-    _btnUndo.layer.cornerRadius = 8;
-    _btnInfo.layer.cornerRadius = 8;
-    _btnDeleteTree.layer.cornerRadius = 8;
+    _btnBack.layer.cornerRadius = 6;
     
     NODE_WIDTH = NODE_WIDTH_REGULAR;
     NODE_HEIGHT = NODE_HEIGHT_REGULAR;
     NODE_SPACING = NODE_SPACING_REGULAR;
     
+    UITapGestureRecognizer * showMasterRecognizer=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showMaster:)];
+    [self.view addGestureRecognizer:showMasterRecognizer];
+    
+    if (self.splitViewController.viewControllers.count > 1) {
+        _btnBack.hidden = true;
+    }
     
 }
 
 -(void)viewDidAppear:(BOOL)animated{
     
+    if (isFirstTimeAppearing) {
+        isFirstTimeAppearing = false;
+        
+        [self updateTree];
+    }
     [self checkIfTreeIsGenerated];
 }
 
@@ -85,61 +92,33 @@
     
     BinNode<TreeNode, compare_to<TreeNode>>*root = tree.GetRoot();
     
-    int h = tree.Height(root);
     int size = tree.Size(root);
     
     if (size <= 0) {
-    
+        
         AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-     
+        
         if ([appDelegate.nodeArray count] > 0) {
             
             for (int i = 0; i < appDelegate.nodeArray.count; i++) {
                 tree.Insert([appDelegate.nodeArray[i] integerValue]);
             }
-            [self redrawTree];
+            [self updateTree];
             
         }
     }
 }
 
--(void)redrawTree{
+- (void)showMaster:(UITapGestureRecognizer*)sender {
     
-    BinNode<TreeNode, compare_to<TreeNode>>*root = tree.GetRoot();
-    
-    int h = tree.Height(root);
-    
-    if (h > 4) {
-        if (h> 5) {
-            NODE_WIDTH = NODE_WIDTH_SMALLEST;
-            NODE_HEIGHT = NODE_HEIGHT_SMALLEST;
-            NODE_SPACING = NODE_SPACING_SMALLEST;
-        }else{
-            NODE_WIDTH = NODE_WIDTH_SMALL;
-            NODE_HEIGHT = NODE_HEIGHT_SMALL;
-            NODE_SPACING = NODE_SPACING_SMALL;
-        }
-    }else{
-        NODE_WIDTH = NODE_WIDTH_REGULAR;
-        NODE_HEIGHT = NODE_HEIGHT_REGULAR;
-        NODE_SPACING = NODE_SPACING_REGULAR;
-    }
-    
-    CGFloat width = NODE_WIDTH*(pow(2, h));
-    CGFloat height = (NODE_HEIGHT + NODE_SPACING)*(h+1);
-    
-    _treeScrollView.contentSize = CGSizeMake(MAX(width, _treeScrollView.frame.size.width), MAX(height, _treeScrollView.frame.size.height));
-    _treeZoomSubView.frame = CGRectMake(0, 0, MAX(width, _treeScrollView.frame.size.width), MAX(height, _treeScrollView.frame.size.height));
-    
-    if (_treeScrollView.contentSize.width > _treeScrollView.frame.size.width) {
-        _treeScrollView.contentOffset = CGPointMake((_treeScrollView.contentSize.width-_treeScrollView.frame.size.width)/2, 0);
-    }
-    
-    [self drawTree:*root];
-    
+    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
 }
 
-
+- (IBAction)btnBack:(id)sender {
+    
+    [self.navigationController popViewControllerAnimated:true];
+    
+}
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
@@ -150,23 +129,12 @@
 {
 }
 
-- (void)hideKeyboard:(UITapGestureRecognizer*)sender {
-    
-    [_txtSearch resignFirstResponder];
-    [_txtInsert resignFirstResponder];
-    [_txtRandomTree resignFirstResponder];
-}
 
-
-- (IBAction)btnSearch:(id)sender {
+- (IBAction)SearchNode:(UIButton*)sender {
     
     _treeScrollView.zoomScale = 1;
     
-    [self hideKeyboard:nil];
-    
-    int value = [_txtSearch.text integerValue];
-    _txtSearch.text = @"";
-    
+    int value = sender.tag;
     for (UIView *view in _treeZoomSubView.subviews) {
         [view removeFromSuperview];
     }
@@ -227,127 +195,83 @@
     
 }
 
-- (IBAction)btnInsert:(id)sender {
-    
-    [self hideKeyboard:nil];
-    
-    int value = [_txtInsert.text integerValue];
-    _txtInsert.text = @"";
-    
-    if (value > 0) {
-        
-        _treeScrollView.zoomScale = 1;
-        
-        previousTree = tree;
-        _btnUndo.enabled = true;
-        tree.Insert(value);
-        
-        for (UIView *view in _treeZoomSubView.subviews) {
-            [view removeFromSuperview];
-        }
-        
-        BinNode<TreeNode, compare_to<TreeNode>>*root = tree.GetRoot();
-        
-        int h = tree.Height(root);
-        
-        if (h > 4) {
-            if (h> 5) {
-                NODE_WIDTH = NODE_WIDTH_SMALLEST;
-                NODE_HEIGHT = NODE_HEIGHT_SMALLEST;
-                NODE_SPACING = NODE_SPACING_SMALLEST;
-            }else{
-                NODE_WIDTH = NODE_WIDTH_SMALL;
-                NODE_HEIGHT = NODE_HEIGHT_SMALL;
-                NODE_SPACING = NODE_SPACING_SMALL;
-            }
-        }else{
-            NODE_WIDTH = NODE_WIDTH_REGULAR;
-            NODE_HEIGHT = NODE_HEIGHT_REGULAR;
-            NODE_SPACING = NODE_SPACING_REGULAR;
-        }
-        
-        CGFloat width = NODE_WIDTH*(pow(2, h));
-        CGFloat height = (NODE_HEIGHT + NODE_SPACING)*(h+1);
-        
-        _treeScrollView.contentSize = CGSizeMake(MAX(width, _treeScrollView.frame.size.width), MAX(height, _treeScrollView.frame.size.height));
-        _treeZoomSubView.frame = CGRectMake(0, 0, MAX(width, _treeScrollView.frame.size.width), MAX(height, _treeScrollView.frame.size.height));
-        
-        if (_treeScrollView.contentSize.width > _treeScrollView.frame.size.width) {
-            _treeScrollView.contentOffset = CGPointMake((_treeScrollView.contentSize.width-_treeScrollView.frame.size.width)/2, 0);
-        }
-        
-        [self drawTree:*root];
-        
-    }else{
-        
-        UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:@"Erro"
-                                     message:[NSString stringWithFormat:@"Por favor escolha um número positivo maior que 0."]
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction* noButton = [UIAlertAction
-                                   actionWithTitle:@"OK"
-                                   style:UIAlertActionStyleDefault
-                                   handler:^(UIAlertAction * action) {
-                                   }];
-        
-        [alert addAction:noButton];
-        
-        [self presentViewController:alert animated:YES completion:nil];
-        
-    }
-    
-}
 
-- (IBAction)btGenerateTree:(id)sender {
-    
-    [self hideKeyboard:nil];
-    
-    int nNodes = 0;
-    nNodes = [_txtRandomTree.text integerValue];
-    int range = 8*nNodes;
-    
-    if (nNodes == 0) {
-        
-        UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:@"Erro"
-                                     message:[NSString stringWithFormat:@"Por favor escolha o número de nós para a nova árvore"]
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction* noButton = [UIAlertAction
-                                   actionWithTitle:@"OK"
-                                   style:UIAlertActionStyleDefault
-                                   handler:^(UIAlertAction * action) {
-                                   }];
-        
-        [alert addAction:noButton];
-        
-        [self presentViewController:alert animated:YES completion:nil];
-        
-    }else{
-        
-        _txtRandomTree.text = @"";
-        [self insertRandomNodes:nNodes :range];
-        
-    }
-    
-}
-
-
--(void)insertRandomNodes:(int) Nnodes: (int ) range{
-    
-    previousTree = tree;
-    _btnUndo.enabled = true;
-    [self deleteTree];
+- (IBAction)InsertNode:(UIButton*)sender {
     
     _treeScrollView.zoomScale = 1;
+    
+    BinNode<TreeNode, compare_to<TreeNode>>*oldRoot = tree.GetRoot();
+    int oldHeight = tree.Height(oldRoot);
+    
+    int value = sender.tag;
+    previousTree = tree;
+    tree.Insert(value);
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if ([appDelegate.nodeArray count] > 0 || oldHeight <= 0) {
+        [appDelegate.nodeArray addObject:[NSNumber numberWithInteger:value]];
+    }
+    
+    for (UIView *view in _treeZoomSubView.subviews) {
+        [view removeFromSuperview];
+    }
+    
+    BinNode<TreeNode, compare_to<TreeNode>>*root = tree.GetRoot();
+    
+    int h = tree.Height(root);
+    int size = tree.Size(root);
+    
+    if (h > 4) {
+        if (h> 5) {
+            NODE_WIDTH = NODE_WIDTH_SMALLEST;
+            NODE_HEIGHT = NODE_HEIGHT_SMALLEST;
+            NODE_SPACING = NODE_SPACING_SMALLEST;
+        }else{
+            NODE_WIDTH = NODE_WIDTH_SMALL;
+            NODE_HEIGHT = NODE_HEIGHT_SMALL;
+            NODE_SPACING = NODE_SPACING_SMALL;
+        }
+    }else{
+        NODE_WIDTH = NODE_WIDTH_REGULAR;
+        NODE_HEIGHT = NODE_HEIGHT_REGULAR;
+        NODE_SPACING = NODE_SPACING_REGULAR;
+    }
+    
+    CGFloat width = NODE_WIDTH*(pow(2, h));
+    CGFloat height = (NODE_HEIGHT + NODE_SPACING)*(h+1);
+    
+    _treeScrollView.contentSize = CGSizeMake(MAX(width, _treeScrollView.frame.size.width), MAX(height, _treeScrollView.frame.size.height));
+    _treeZoomSubView.frame = CGRectMake(0, 0, MAX(width, _treeScrollView.frame.size.width), MAX(height, _treeScrollView.frame.size.height));
+    
+    if (_treeScrollView.contentSize.width > _treeScrollView.frame.size.width) {
+        _treeScrollView.contentOffset = CGPointMake((_treeScrollView.contentSize.width-_treeScrollView.frame.size.width)/2, 0);
+    }
+    
+    CGRect frame = CGRectMake(0, 0, _treeScrollView.contentSize.width, NODE_HEIGHT + NODE_SPACING);
+    
+    [self drawTree:*root];
+    
+}
+
+
+- (IBAction)GenerateRandomTree:(UIButton*)sender {
+    
+    _treeScrollView.zoomScale = 1;
+    
+    previousTree = tree;
+    [self deleteTree];
+    
+    for (UIView *view in _treeZoomSubView.subviews) {
+        [view removeFromSuperview];
+    }
+    
+    int nNodes = sender.tag;
+    int range = 8*nNodes;
     
     NSMutableArray *nodeArray = [[NSMutableArray alloc] init];
     int insertion;
     
-    
-    while (nodeArray.count < Nnodes) {
-        
+    while (nodeArray.count < nNodes) {
         insertion = (arc4random()%range)+1;
         if (![nodeArray containsObject:[NSNumber numberWithInteger:insertion]]) {
             [nodeArray addObject:[NSNumber numberWithInteger:insertion]];
@@ -355,6 +279,8 @@
         }
     }
     
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    appDelegate.nodeArray = nodeArray;
     
     BinNode<TreeNode, compare_to<TreeNode>>*root = tree.GetRoot();
     
@@ -390,12 +316,115 @@
     
 }
 
+- (IBAction)UndoChanges{
+    
+    tree = previousTree;
+    
+    for (UIView *view in _treeZoomSubView.subviews) {
+        [view removeFromSuperview];
+    }
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate.nodeArray removeAllObjects];
+    
+    BinNode<TreeNode, compare_to<TreeNode>>*root = tree.GetRoot();
+    
+    int h = tree.Height(root);
+    
+    if (h > 4) {
+        if (h> 5) {
+            NODE_WIDTH = NODE_WIDTH_SMALLEST;
+            NODE_HEIGHT = NODE_HEIGHT_SMALLEST;
+            NODE_SPACING = NODE_SPACING_SMALLEST;
+        }else{
+            NODE_WIDTH = NODE_WIDTH_SMALL;
+            NODE_HEIGHT = NODE_HEIGHT_SMALL;
+            NODE_SPACING = NODE_SPACING_SMALL;
+        }
+    }else{
+        NODE_WIDTH = NODE_WIDTH_REGULAR;
+        NODE_HEIGHT = NODE_HEIGHT_REGULAR;
+        NODE_SPACING = NODE_SPACING_REGULAR;
+    }
+    
+    CGFloat width = NODE_WIDTH*(pow(2, h));
+    CGFloat height = (NODE_HEIGHT + NODE_SPACING)*(h+1);
+    
+    _treeScrollView.contentSize = CGSizeMake(MAX(width, _treeScrollView.frame.size.width), MAX(height, _treeScrollView.frame.size.height));
+    _treeZoomSubView.frame = CGRectMake(0, 0, MAX(width, _treeScrollView.frame.size.width), MAX(height, _treeScrollView.frame.size.height));
+    
+    if (_treeScrollView.contentSize.width > _treeScrollView.frame.size.width) {
+        _treeScrollView.contentOffset = CGPointMake((_treeScrollView.contentSize.width-_treeScrollView.frame.size.width)/2, 0);
+    }
+    
+    [self drawTree:*root];
+    
+}
+
+-(void)showTreeInfo{
+    
+    BinNode<TreeNode, compare_to<TreeNode>>*root = tree.GetRoot();
+    
+    int h = tree.Height(root);
+    int size = tree.Size(root);
+    
+    if (size > 0) {
+        
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"Detalhes da árvore"
+                                     message:[NSString stringWithFormat:@"Altura da árvore: %d \n Tamanho da árvore: %d", h, size]
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* noButton = [UIAlertAction
+                                   actionWithTitle:@"OK"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction * action) {
+                                   }];
+        
+        [alert addAction:noButton];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+    }else{
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"Árvore vazia"
+                                     message:[NSString stringWithFormat:@"A árvore tem atual está vazia."]
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* noButton = [UIAlertAction
+                                   actionWithTitle:@"OK"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction * action) {
+                                   }];
+        
+        [alert addAction:noButton];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+    
+}
+
+-(void)deleteTree{
+    
+    previousTree = tree;
+    tree.MakeEmpty();
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate.nodeArray removeAllObjects];
+    
+    for (UIView *view in _treeZoomSubView.subviews) {
+        [view removeFromSuperview];
+    }
+    
+}
 
 -(void)deleteNode:(int) value{
     
     _treeScrollView.zoomScale = 1;
     
     tree.Remove(value);
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate.nodeArray removeAllObjects];
     
     for (UIView *view in _treeZoomSubView.subviews) {
         [view removeFromSuperview];
@@ -431,20 +460,17 @@
         _treeScrollView.contentOffset = CGPointMake((_treeScrollView.contentSize.width-_treeScrollView.frame.size.width)/2, 0);
     }
     
-    int size = tree.Size(root);
-    
-    if (size > 0) {
-        [self drawTree:*root];
-    }
+    [self drawTree:*root];
     
 }
 
-
 - (void)tapToDeleteNode:(UITapGestureRecognizer *)recognizer
 {
-    
     previousTree = tree;
-    _btnUndo.enabled = true;
+    
+    UINavigationController *navVC = (UINavigationController *)(self.splitViewController.viewControllers.firstObject) ;
+    RedBlackMaster *master = navVC.viewControllers.firstObject;
+    [master performSelector:@selector(EnableUndoButton) withObject:nil];
     [self deleteNode:[recognizer.view tag]];
 }
 
@@ -534,50 +560,9 @@
     return node;
 }
 
-- (IBAction)btnDeleteTree:(id)sender {
+-(void) updateTree{
     
-    UIAlertController * alert = [UIAlertController
-                                 alertControllerWithTitle:@"Excluir árvore?"
-                                 message:[NSString stringWithFormat:@"Deseja excluir todos os nós da árvore?"]
-                                 preferredStyle:UIAlertControllerStyleAlert];
-    
-    
-    UIAlertAction* yesButton = [UIAlertAction
-                                actionWithTitle:@"Sim"
-                                style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction * action) {
-                                    self->previousTree = self->tree;
-                                    self.btnUndo.enabled = true;
-                                    [self deleteTree];
-                                }];
-    
-    UIAlertAction* noButton = [UIAlertAction
-                               actionWithTitle:@"Não"
-                               style:UIAlertActionStyleDefault
-                               handler:^(UIAlertAction * action) {
-                               }];
-    
-    [alert addAction:yesButton];
-    [alert addAction:noButton];
-    
-    [self presentViewController:alert animated:YES completion:nil];
-    
-}
-
--(void)deleteTree{
-    
-    tree.MakeEmpty();
-    
-    for (UIView *view in _treeZoomSubView.subviews) {
-        [view removeFromSuperview];
-    }
-    
-}
-
-- (IBAction)btnUndo:(id)sender {
-    
-    tree = previousTree;
-    _btnUndo.enabled = false;
+    _treeScrollView.zoomScale = 1;
     
     for (UIView *view in _treeZoomSubView.subviews) {
         [view removeFromSuperview];
@@ -586,6 +571,7 @@
     BinNode<TreeNode, compare_to<TreeNode>>*root = tree.GetRoot();
     
     int h = tree.Height(root);
+    int size = tree.Size(root);
     
     if (h > 4) {
         if (h> 5) {
@@ -613,52 +599,11 @@
         _treeScrollView.contentOffset = CGPointMake((_treeScrollView.contentSize.width-_treeScrollView.frame.size.width)/2, 0);
     }
     
+    CGRect frame = CGRectMake(0, 0, _treeScrollView.contentSize.width, NODE_HEIGHT + NODE_SPACING);
+    
     [self drawTree:*root];
     
 }
-
-- (IBAction)btnInfo:(id)sender {
-    
-    BinNode<TreeNode, compare_to<TreeNode>>*root = tree.GetRoot();
-    
-    int h = tree.Height(root);
-    int size = tree.Size(root);
-    
-    if (size > 0) {
-        
-        UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:@"Detalhes da árvore"
-                                     message:[NSString stringWithFormat:@"Altura da árvore: %d \n Tamanho da árvore: %d", h, size]
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction* noButton = [UIAlertAction
-                                   actionWithTitle:@"OK"
-                                   style:UIAlertActionStyleDefault
-                                   handler:^(UIAlertAction * action) {
-                                   }];
-        
-        [alert addAction:noButton];
-        
-        [self presentViewController:alert animated:YES completion:nil];
-    }else{
-        UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:@"Árvore vazia"
-                                     message:[NSString stringWithFormat:@"A árvore tem atual está vazia."]
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction* noButton = [UIAlertAction
-                                   actionWithTitle:@"OK"
-                                   style:UIAlertActionStyleDefault
-                                   handler:^(UIAlertAction * action) {
-                                   }];
-        
-        [alert addAction:noButton];
-        
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-    
-}
-
 
 -(void)drawTree:(BinNode<TreeNode, compare_to<TreeNode>>)root{
     
@@ -714,7 +659,7 @@
         if(  node.GetRight()->GetElement() != NULL && node.GetRight() != node.GetRight()->GetRight()){
             
             [self drawLineInView:cell :frame :NO];
-
+            
             CGRect rightFrame = CGRectMake(frame.origin.x + (frame.size.width/2), frame.origin.y+NODE_HEIGHT + NODE_SPACING, frame.size.width/2, NODE_HEIGHT + NODE_SPACING);
             [self drawNode:*node.GetRight() :rightFrame];
         }
@@ -823,7 +768,6 @@
 -(void)drawLineInView:(UIView *) view:(CGRect)frame:(BOOL) leftChild {
     
     if (leftChild) {
-        
         CAShapeLayer *shapeLayer = [CAShapeLayer layer];
         UIBezierPath *path = [UIBezierPath bezierPath];
         [path moveToPoint:CGPointMake((frame.size.width/2), NODE_HEIGHT)];
@@ -831,9 +775,7 @@
         shapeLayer.path = path.CGPath;
         shapeLayer.strokeColor = [UIColor darkGrayColor].CGColor;
         [view.layer addSublayer:shapeLayer];
-        
     }else{
-        
         CAShapeLayer *shapeLayer = [CAShapeLayer layer];
         UIBezierPath *path = [UIBezierPath bezierPath];
         [path moveToPoint:CGPointMake((frame.size.width/2), NODE_HEIGHT)];
@@ -841,7 +783,6 @@
         shapeLayer.path = path.CGPath;
         shapeLayer.strokeColor = [UIColor darkGrayColor].CGColor;
         [view.layer addSublayer:shapeLayer];
-        
     }
     
 }
@@ -849,7 +790,6 @@
 -(void)drawLineInViewInSearch:(UIView *) view:(CGRect)frame:(BOOL) leftChild {
     
     if (leftChild) {
-        
         CAShapeLayer *shapeLayer = [CAShapeLayer layer];
         UIBezierPath *path = [UIBezierPath bezierPath];
         [path moveToPoint:CGPointMake((frame.size.width/2), NODE_HEIGHT)];
@@ -858,9 +798,7 @@
         shapeLayer.lineWidth = 4;
         shapeLayer.strokeColor = [UIColor greenColor].CGColor;
         [view.layer addSublayer:shapeLayer];
-        
     }else{
-        
         CAShapeLayer *shapeLayer = [CAShapeLayer layer];
         UIBezierPath *path = [UIBezierPath bezierPath];
         [path moveToPoint:CGPointMake((frame.size.width/2), NODE_HEIGHT)];
@@ -869,11 +807,17 @@
         shapeLayer.lineWidth = 4;
         shapeLayer.strokeColor = [UIColor greenColor].CGColor;
         [view.layer addSublayer:shapeLayer];
-        
     }
     
 }
 
+-(void) printTreeInOrder{
+    
+    BinNode<TreeNode, compare_to<TreeNode>>*root = tree.GetRoot();
+    
+    NSArray *tmp = [self getArrayOfDataInOrder:*root];
+    
+}
 
 -(NSArray *)getArrayOfDataInOrder:(BinNode<TreeNode, compare_to<TreeNode>>)root{
     
@@ -894,6 +838,7 @@
             [nodeArray addObjectsFromArray:[self getArrayOfDataInOrder:*root.GetRight()]];
         }
         
+        NSLog(@"teste nodes : %@", nodeArray);
         return [[NSArray alloc] initWithArray:nodeArray];
         
     }
@@ -901,3 +846,6 @@
 }
 
 @end
+
+
+
