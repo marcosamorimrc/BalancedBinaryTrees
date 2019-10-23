@@ -1,8 +1,8 @@
 //
-//  TesteDetail.h
+//  AADetail.h
 //  Arvores
 //
-//  Created by Marcos Amorim on 29/08/19.
+//  Created by Marcos Amorim on 23/10/19.
 //  Copyright © 2019 Marcos Amorim. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AVLDetail : UIViewController
+@interface AADetail : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIButton *btnBack;
 
@@ -25,8 +25,6 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)deleteTree;
 -(void)showHelpModal;
 
-
 @end
-
 
 NS_ASSUME_NONNULL_END

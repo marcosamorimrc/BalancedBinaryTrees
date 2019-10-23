@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UIButton *btnUndo;
 @property (weak, nonatomic) IBOutlet UIButton *btnInfo;
 @property (weak, nonatomic) IBOutlet UIButton *btnDeleteTree;
+@property (weak, nonatomic) IBOutlet UIButton *btnHelp;
 
 - (void)EnableUndoButton;
 

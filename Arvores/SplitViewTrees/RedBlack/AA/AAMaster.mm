@@ -1,17 +1,17 @@
 //
-//  TesteMaster.m
+//  AAMaster.m
 //  Arvores
 //
 //  Created by Marcos Amorim on 29/08/19.
 //  Copyright © 2019 Marcos Amorim. All rights reserved.
 //
 
-#import "RedBlackMaster.h"
-#import "RedBlackDetail.h"
+#import "AAMaster.h"
+#import "AADetail.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate.h"
 
-#include "RedBlack.h"
+#include "AATree.h"
 #include "utlIterate.h"
 #include "Ordered.h"
 #include "TreeNode.h"
@@ -19,7 +19,7 @@
 #include "Hash.h"
 #include "Heap.h"
 
-@interface RedBlackMaster ()<UITextFieldDelegate, UISplitViewControllerDelegate>{
+@interface AAMaster ()<UITextFieldDelegate, UISplitViewControllerDelegate>{
     
     
     BOOL isFirstTimeAppearing;
@@ -32,11 +32,11 @@
 }
 
 
-@property (strong) RedBlackDetail *RedBlackDetailViewController;
+@property (strong) AADetail *AADetailViewController;
 
 @end
 
-@implementation RedBlackMaster
+@implementation AAMaster
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -92,7 +92,7 @@
     self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    _RedBlackDetailViewController = (RedBlackDetail *)[storyboard instantiateViewControllerWithIdentifier:@"RedBlackDetail"];
+    _AADetailViewController = (AADetail *)[storyboard instantiateViewControllerWithIdentifier:@"AADetail"];
 }
 
 - (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController{
@@ -119,7 +119,7 @@
         CONTENT_VIEW_HEIGHT = _contentView.frame.size.height;
         isFirstTimeAppearing = false;
     }
-
+    
 }
 
 - (void)hideKeyboard:(UITapGestureRecognizer*)sender {
@@ -194,15 +194,15 @@
         
         if (self.splitViewController.viewControllers.count > 1) {
             _btnSearch.tag = value;
-            RedBlackDetail *detail = self.splitViewController.viewControllers.lastObject;
+            AADetail *detail = self.splitViewController.viewControllers.lastObject;
             [detail performSelector:@selector(SearchNode:) withObject:sender];
             
         }else{
             if ([self.navigationController.viewControllers.lastObject isEqual:self]) {
                 
                 _btnSearch.tag = value;
-                [self.navigationController pushViewController:_RedBlackDetailViewController animated:true];
-                [_RedBlackDetailViewController performSelector:@selector(SearchNode:) withObject:sender];
+                [self.navigationController pushViewController:_AADetailViewController animated:true];
+                [_AADetailViewController performSelector:@selector(SearchNode:) withObject:sender];
                 
             }
         }
@@ -246,15 +246,15 @@
         
         if (self.splitViewController.viewControllers.count > 1) {
             _btnInsert.tag = value;
-            RedBlackDetail *detail = self.splitViewController.viewControllers.lastObject;
+            AADetail *detail = self.splitViewController.viewControllers.lastObject;
             [detail performSelector:@selector(InsertNode:) withObject:sender];
         }
         else{
             if ([self.navigationController.viewControllers.lastObject isEqual:self]) {
                 
                 _btnInsert.tag = value;
-                [_RedBlackDetailViewController performSelector:@selector(InsertNode:) withObject:sender];
-                [self.navigationController pushViewController:_RedBlackDetailViewController animated:true];
+                [_AADetailViewController performSelector:@selector(InsertNode:) withObject:sender];
+                [self.navigationController pushViewController:_AADetailViewController animated:true];
                 
             }
         }
@@ -296,15 +296,15 @@
         if (self.splitViewController.viewControllers.count > 1) {
             self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
             _btnRandomTree.tag = value;
-            RedBlackDetail *detail = self.splitViewController.viewControllers.lastObject;
+            AADetail *detail = self.splitViewController.viewControllers.lastObject;
             [detail performSelector:@selector(GenerateRandomTree:) withObject:sender];
             _btnUndo.enabled = true;
         }else{
             if ([self.navigationController.viewControllers.lastObject isEqual:self]) {
                 
                 _btnRandomTree.tag = value;
-                [_RedBlackDetailViewController performSelector:@selector(GenerateRandomTree:) withObject:sender];
-                [self.navigationController pushViewController:_RedBlackDetailViewController animated:true];
+                [_AADetailViewController performSelector:@selector(GenerateRandomTree:) withObject:sender];
+                [self.navigationController pushViewController:_AADetailViewController animated:true];
                 
             }
         }
@@ -334,12 +334,12 @@
     
     if (self.splitViewController.viewControllers.count > 1) {
         _btnUndo.enabled = false;
-        RedBlackDetail *detail = self.splitViewController.viewControllers.lastObject;
+        AADetail *detail = self.splitViewController.viewControllers.lastObject;
         [detail performSelector:@selector(UndoChanges) withObject:nil];
     }else{
         if ([self.navigationController.viewControllers.lastObject isEqual:self]) {
-            [_RedBlackDetailViewController performSelector:@selector(UndoChanges) withObject:sender];
-            [self.navigationController pushViewController:_RedBlackDetailViewController animated:true];
+            [_AADetailViewController performSelector:@selector(UndoChanges) withObject:sender];
+            [self.navigationController pushViewController:_AADetailViewController animated:true];
         }
     }
     
@@ -348,12 +348,12 @@
 - (IBAction)btnInfo:(id)sender {
     
     if (self.splitViewController.viewControllers.count > 1) {
-        RedBlackDetail *detail = self.splitViewController.viewControllers.lastObject;
+        AADetail *detail = self.splitViewController.viewControllers.lastObject;
         [detail performSelector:@selector(showTreeInfo) withObject:nil];
     }else{
         if ([self.navigationController.viewControllers.lastObject isEqual:self]) {
-            [self.navigationController pushViewController:_RedBlackDetailViewController animated:true];
-            [_RedBlackDetailViewController performSelector:@selector(showTreeInfo) withObject:sender];
+            [self.navigationController pushViewController:_AADetailViewController animated:true];
+            [_AADetailViewController performSelector:@selector(showTreeInfo) withObject:sender];
         }
     }
     
@@ -362,12 +362,12 @@
 - (IBAction)btnDeleteTree:(id)sender {
     
     if (self.splitViewController.viewControllers.count > 1) {
-        RedBlackDetail *detail = self.splitViewController.viewControllers.lastObject;
+        AADetail *detail = self.splitViewController.viewControllers.lastObject;
         [detail performSelector:@selector(deleteTree) withObject:nil];
     }else{
         if ([self.navigationController.viewControllers.lastObject isEqual:self]) {
-            [self.navigationController pushViewController:_RedBlackDetailViewController animated:true];
-            [_RedBlackDetailViewController performSelector:@selector(deleteTree) withObject:sender];
+            [self.navigationController pushViewController:_AADetailViewController animated:true];
+            [_AADetailViewController performSelector:@selector(deleteTree) withObject:sender];
         }
     }
 }
@@ -379,7 +379,7 @@
         
         self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
         
-        RedBlackDetail *detail = self.splitViewController.viewControllers.lastObject;
+        AADetail *detail = self.splitViewController.viewControllers.lastObject;
         [detail performSelector:@selector(showHelpModal) withObject:nil];
     }else{
         

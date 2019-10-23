@@ -143,6 +143,7 @@
         _btnUndo.hidden = true;
         _btnInfo.hidden = true;
         _btnDeleteTree.hidden = true;
+        _btnHelp.hidden = true;
     }
     
     [UIView animateWithDuration:0.5f animations:^{
@@ -163,6 +164,7 @@
         _btnUndo.hidden = false;
         _btnInfo.hidden = false;
         _btnDeleteTree.hidden = false;
+        _btnHelp.hidden = false;
     }
     
 }
@@ -376,5 +378,26 @@
         }
     }
 }
+
+- (IBAction)btnHelp:(id)sender {
+    
+    
+    if (self.splitViewController.viewControllers.count > 1) {
+        
+        self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
+        
+        AVLDetail *detail = self.splitViewController.viewControllers.lastObject;
+        [detail performSelector:@selector(showHelpModal) withObject:nil];
+    }else{
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController *modal = [storyboard instantiateViewControllerWithIdentifier:@"HelpModal"];
+        
+        [self presentViewController:modal animated:YES completion:nil];
+        
+    }
+    
+}
+
 
 @end

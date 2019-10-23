@@ -1,20 +1,19 @@
 //
-//  TesteDetail.m
+//  AADetail.m
 //  Arvores
 //
 //  Created by Marcos Amorim on 29/08/19.
 //  Copyright © 2019 Marcos Amorim. All rights reserved.
 //
 
-#import "AVLDetail.h"
-#import "AVLMaster.h"
+#import "AADetail.h"
+#import "AAMaster.h"
 #import "NodeXib.h"
 #import "InfoXib.h"
 #import "AppDelegate.h"
-#import "HelpModal.h"
 #import <QuartzCore/QuartzCore.h>
 
-#include "AVLTree.h"
+#include "AATree.h"
 #include "utlIterate.h"
 #include "Ordered.h"
 #include "TreeNode.h"
@@ -22,19 +21,19 @@
 #include "Hash.h"
 #include "Heap.h"
 
-@interface AVLDetail () <UIScrollViewDelegate>{
-
-AVLTree<TreeNode> tree;
-AVLTree<TreeNode> previousTree;
-
-BOOL isFirstTimeAppearing;
+@interface AADetail () <UIScrollViewDelegate>{
     
-NSMutableArray *InfoViews;
-
-CGFloat NODE_WIDTH;
-CGFloat NODE_HEIGHT;
-CGFloat NODE_SPACING;
-
+    AATree<TreeNode> tree;
+    AATree<TreeNode> previousTree;
+    
+    BOOL isFirstTimeAppearing;
+    
+    NSMutableArray *InfoViews;
+    
+    CGFloat NODE_WIDTH;
+    CGFloat NODE_HEIGHT;
+    CGFloat NODE_SPACING;
+    
 }
 @end
 
@@ -50,7 +49,7 @@ CGFloat NODE_SPACING;
 #define NODE_HEIGHT_SMALLEST 15
 #define NODE_SPACING_SMALLEST 21
 
-@implementation AVLDetail
+@implementation AADetail
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -192,7 +191,7 @@ CGFloat NODE_SPACING;
     
     CGRect frame = CGRectMake(0, 0, _treeScrollView.contentSize.width, NODE_HEIGHT + NODE_SPACING);
     
-    [self drawNodeInSearch:*root :frame :value];
+    [self drawNodeInSearch:*root :frame :value :[UIColor blackColor]];
     
 }
 
@@ -212,7 +211,6 @@ CGFloat NODE_SPACING;
     if ([appDelegate.nodeArray count] > 0 || oldHeight <= 0) {
         [appDelegate.nodeArray addObject:[NSNumber numberWithInteger:value]];
     }
-    
     
     for (UIView *view in _treeZoomSubView.subviews) {
         [view removeFromSuperview];
@@ -364,7 +362,7 @@ CGFloat NODE_SPACING;
 }
 
 -(void)showTreeInfo{
-
+    
     BinNode<TreeNode, compare_to<TreeNode>>*root = tree.GetRoot();
     
     int h = tree.Height(root);
@@ -411,7 +409,7 @@ CGFloat NODE_SPACING;
     UIViewController *modal = [storyboard instantiateViewControllerWithIdentifier:@"HelpModal"];
     
     [self presentViewController:modal animated:YES completion:nil];
-
+    
 }
 
 -(void)deleteTree{
@@ -480,7 +478,7 @@ CGFloat NODE_SPACING;
     previousTree = tree;
     
     UINavigationController *navVC = (UINavigationController *)(self.splitViewController.viewControllers.firstObject) ;
-    AVLMaster *master = navVC.viewControllers.firstObject;
+    AAMaster *master = navVC.viewControllers.firstObject;
     [master performSelector:@selector(EnableUndoButton) withObject:nil];
     [self deleteNode:[recognizer.view tag]];
 }
@@ -574,7 +572,7 @@ CGFloat NODE_SPACING;
 -(void) updateTree{
     
     _treeScrollView.zoomScale = 1;
-
+    
     for (UIView *view in _treeZoomSubView.subviews) {
         [view removeFromSuperview];
     }
@@ -620,11 +618,11 @@ CGFloat NODE_SPACING;
     
     CGRect frame = CGRectMake(0, 0, _treeScrollView.contentSize.width, NODE_HEIGHT + NODE_SPACING);
     
-    [self drawNode:root :frame];
+    [self drawNode:root :frame :[UIColor blackColor]];
     
 }
 
--(void)drawNode:(BinNode<TreeNode, compare_to<TreeNode>>)node :(CGRect)frame{
+-(void)drawNode:(BinNode<TreeNode, compare_to<TreeNode>>)node :(CGRect)frame :(UIColor*)Color{
     
     if(  node.GetElement() != NULL){
         
@@ -636,9 +634,13 @@ CGFloat NODE_SPACING;
         cell.tag = node.GetElement().getData();
         cell.viewData.tag = node.GetElement().getData();
         
+        cell.lblData.backgroundColor = Color;
+        if (Color == [UIColor blackColor]) {
+            cell.lblData.textColor = [UIColor whiteColor];
+        }
+        
         cell.viewData.frame = CGRectMake((cell.frame.size.width - NODE_WIDTH - 2)/2, 0, NODE_WIDTH-2, NODE_HEIGHT);
-        
-        
+        cell.viewData.clipsToBounds = true;
         cell.viewData.layer.cornerRadius = cell.viewData.frame.size.height/2;
         
         UITapGestureRecognizer *singleFingerTap =
@@ -651,7 +653,6 @@ CGFloat NODE_SPACING;
                                                       action:@selector(holdToShowInfo:)];
         [cell.viewData addGestureRecognizer:longPressTap];
         
-        
         [_treeZoomSubView addSubview:cell];
         
         if(  node.GetLeft()->GetElement() != NULL ){
@@ -659,21 +660,31 @@ CGFloat NODE_SPACING;
             [self drawLineInView:cell :frame :YES];
             
             CGRect leftFrame = CGRectMake(frame.origin.x, frame.origin.y+NODE_HEIGHT + NODE_SPACING, frame.size.width/2, NODE_HEIGHT + NODE_SPACING);
-            [self drawNode:*node.GetLeft() :leftFrame];
+            
+            [self drawNode:*node.GetLeft() :leftFrame :[UIColor blackColor]];
         }
         if(  node.GetRight()->GetElement() != NULL ){
             
             [self drawLineInView:cell :frame :NO];
             
             CGRect rightFrame = CGRectMake(frame.origin.x + (frame.size.width/2), frame.origin.y+NODE_HEIGHT + NODE_SPACING, frame.size.width/2, NODE_HEIGHT + NODE_SPACING);
-            [self drawNode:*node.GetRight() :rightFrame];
+            
+            UIColor *childColor;
+            
+            if (node.GetBalance() == node.GetRight()->GetBalance()) {
+                childColor = [UIColor redColor];
+            }else{
+                childColor = [UIColor blackColor];
+            }
+            
+            [self drawNode:*node.GetRight() :rightFrame :childColor];
         }
         
     }
     
 }
 
--(void)drawNodeInSearch:(BinNode<TreeNode, compare_to<TreeNode>>)node :(CGRect)frame :(int)searchedValue{
+-(void)drawNodeInSearch:(BinNode<TreeNode, compare_to<TreeNode>>)node :(CGRect)frame :(int)searchedValue : (UIColor *)Color{
     
     if(  node.GetElement() != NULL){
         
@@ -686,8 +697,13 @@ CGFloat NODE_SPACING;
         cell.viewData.tag = node.GetElement().getData();
         
         cell.viewData.frame = CGRectMake((cell.frame.size.width - NODE_WIDTH - 2)/2, 0, NODE_WIDTH-2, NODE_HEIGHT);
-        
         cell.viewData.layer.cornerRadius = cell.viewData.frame.size.height/2;
+        
+        cell.lblData.backgroundColor = Color;
+        if (Color == [UIColor blackColor]) {
+            cell.lblData.textColor = [UIColor whiteColor];
+        }
+        cell.viewData.clipsToBounds = true;
         
         if (node.GetElement().getData() == searchedValue) {
             cell.viewData.layer.borderWidth = (NODE_HEIGHT/10)-1;
@@ -712,22 +728,39 @@ CGFloat NODE_SPACING;
             
             if (searchedValue < node.GetElement().getData()) {
                 [self drawLineInViewInSearch:cell :frame :YES];
-                [self drawNodeInSearch:*node.GetLeft() :leftFrame :searchedValue];
+                [self drawNodeInSearch:*node.GetLeft() :leftFrame :searchedValue :[UIColor blackColor]];
             }else{
                 [self drawLineInView:cell :frame :YES];
-                [self drawNode:*node.GetLeft() :leftFrame];
+                [self drawNode:*node.GetLeft() :leftFrame :[UIColor blackColor]];
             }
         }
         if(  node.GetRight()->GetElement() != NULL ){
             
+            
             CGRect rightFrame = CGRectMake(frame.origin.x+(frame.size.width/2), frame.origin.y+NODE_HEIGHT + NODE_SPACING, frame.size.width/2, NODE_HEIGHT + NODE_SPACING);
             
             if (searchedValue > node.GetElement().getData()) {
+                
+                UIColor *childColor;
+                
+                if (node.GetBalance() == node.GetRight()->GetBalance()) {
+                    childColor = [UIColor redColor];
+                }else{
+                    childColor = [UIColor blackColor];
+                }
                 [self drawLineInViewInSearch:cell :frame :NO];
-                [self drawNodeInSearch:*node.GetRight() :rightFrame :searchedValue];
+                [self drawNodeInSearch:*node.GetRight() :rightFrame :searchedValue :childColor];
             }else{
+                
+                UIColor *childColor;
+                
+                if (node.GetBalance() == node.GetRight()->GetBalance()) {
+                    childColor = [UIColor redColor];
+                }else{
+                    childColor = [UIColor blackColor];
+                }
                 [self drawLineInView:cell :frame :NO];
-                [self drawNode:*node.GetRight() :rightFrame];
+                [self drawNode:*node.GetRight() :rightFrame :childColor];
             }
             
         }

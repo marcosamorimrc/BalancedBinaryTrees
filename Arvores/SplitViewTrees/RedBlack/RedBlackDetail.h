@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(IBAction)UndoChanges;
 -(void)deleteTree;
+-(void)showHelpModal;
 
 @end
 

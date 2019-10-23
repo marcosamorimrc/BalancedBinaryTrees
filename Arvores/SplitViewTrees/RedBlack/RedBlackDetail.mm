@@ -403,6 +403,15 @@
     
 }
 
+-(void)showHelpModal{
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController *modal = [storyboard instantiateViewControllerWithIdentifier:@"HelpModal"];
+    
+    [self presentViewController:modal animated:YES completion:nil];
+    
+}
+
 -(void)deleteTree{
     
     previousTree = tree;

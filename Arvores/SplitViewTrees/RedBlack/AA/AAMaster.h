@@ -1,8 +1,8 @@
 //
-//  RedBlackMaster.h
+//  AAMaster.h
 //  Arvores
 //
-//  Created by Marcos Amorim on 18/10/19.
+//  Created by Marcos Amorim on 23/10/19.
 //  Copyright © 2019 Marcos Amorim. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RedBlackMaster : UIViewController
+@interface AAMaster : UIViewController
 
 @property (weak, nonatomic) IBOutlet UILabel *lblTree;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
