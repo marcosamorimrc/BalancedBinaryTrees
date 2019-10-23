@@ -1,19 +1,19 @@
 //
-//  RedBlackDetail.m
+//  SplayDetail.m
 //  Arvores
 //
 //  Created by Marcos Amorim on 29/08/19.
 //  Copyright © 2019 Marcos Amorim. All rights reserved.
 //
 
-#import "RedBlackDetail.h"
-#import "RedBlackMaster.h"
+#import "SplayDetail.h"
+#import "SplayMaster.h"
 #import "NodeXib.h"
 #import "InfoXib.h"
 #import "AppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
 
-#include "RedBlack.h"
+#include "Splay.h"
 #include "utlIterate.h"
 #include "Ordered.h"
 #include "TreeNode.h"
@@ -21,10 +21,10 @@
 #include "Hash.h"
 #include "Heap.h"
 
-@interface RedBlackDetail () <UIScrollViewDelegate>{
+@interface SplayDetail () <UIScrollViewDelegate>{
     
-    RedBlackTree<TreeNode> tree;
-    RedBlackTree<TreeNode> previousTree;
+    SplayTree<TreeNode> tree;
+    SplayTree<TreeNode> previousTree;
     
     BOOL isFirstTimeAppearing;
     
@@ -49,7 +49,7 @@
 #define NODE_HEIGHT_SMALLEST 15
 #define NODE_SPACING_SMALLEST 21
 
-@implementation RedBlackDetail
+@implementation SplayDetail
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -138,6 +138,21 @@
     for (UIView *view in _treeZoomSubView.subviews) {
         [view removeFromSuperview];
     }
+    
+    BinNode<TreeNode, compare_to<TreeNode>>*previousRoot = tree.GetRoot();
+    int previousSize = tree.Size(previousRoot);
+    
+    if (previousSize > 0) {
+        previousTree = tree;
+        
+        UINavigationController *navVC = (UINavigationController *)(self.splitViewController.viewControllers.firstObject) ;
+        SplayMaster *master = navVC.viewControllers.firstObject;
+        [master performSelector:@selector(EnableUndoButton) withObject:nil];
+    }
+    tree.Find(value);
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate.nodeArray removeAllObjects];
     
     BinNode<TreeNode, compare_to<TreeNode>>*root = tree.GetRoot();
     
@@ -478,7 +493,7 @@
     previousTree = tree;
     
     UINavigationController *navVC = (UINavigationController *)(self.splitViewController.viewControllers.firstObject) ;
-    RedBlackMaster *master = navVC.viewControllers.firstObject;
+    SplayMaster *master = navVC.viewControllers.firstObject;
     [master performSelector:@selector(EnableUndoButton) withObject:nil];
     [self deleteNode:[recognizer.view tag]];
 }
@@ -634,17 +649,8 @@
         cell.tag = node.GetElement().getData();
         cell.viewData.tag = node.GetElement().getData();
         
-        if (node.Color == 1) {
-            cell.lblData.textColor = [UIColor whiteColor];
-            cell.lblData.backgroundColor = [UIColor blackColor];
-        }else{
-            cell.lblData.backgroundColor = [UIColor redColor];
-        }
-        
         cell.viewData.frame = CGRectMake((cell.frame.size.width - NODE_WIDTH - 2)/2, 0, NODE_WIDTH-2, NODE_HEIGHT);
-        
         cell.viewData.layer.cornerRadius = cell.viewData.frame.size.height/2;
-        cell.viewData.clipsToBounds = true;
         
         UITapGestureRecognizer *singleFingerTap =
         [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -673,6 +679,7 @@
             [self drawNode:*node.GetRight() :rightFrame];
         }
         
+        
     }
     
 }
@@ -689,27 +696,18 @@
         cell.tag = node.GetElement().getData();
         cell.viewData.tag = node.GetElement().getData();
         
-        if (node.Color == 1) {
-            cell.lblData.textColor = [UIColor whiteColor];
-            cell.lblData.backgroundColor = [UIColor blackColor];
-        }else{
-            cell.lblData.backgroundColor = [UIColor redColor];
-        }
-        
         cell.viewData.frame = CGRectMake((cell.frame.size.width - NODE_WIDTH - 2)/2, 0, NODE_WIDTH-2, NODE_HEIGHT);
         cell.viewData.layer.cornerRadius = cell.viewData.frame.size.height/2;
-        cell.viewData.clipsToBounds = true;
         
         if (node.GetElement().getData() == searchedValue) {
             cell.viewData.layer.borderWidth = (NODE_HEIGHT/10)-1;
             cell.viewData.layer.borderColor = [UIColor greenColor].CGColor;
         }
         
-        
         UITapGestureRecognizer *singleFingerTap =
         [[UITapGestureRecognizer alloc] initWithTarget:self
                                                 action:@selector(tapToDeleteNode:)];
-        [cell addGestureRecognizer:singleFingerTap];
+        [cell.viewData addGestureRecognizer:singleFingerTap];
         
         UILongPressGestureRecognizer *longPressTap =
         [[UILongPressGestureRecognizer alloc] initWithTarget:self
@@ -732,7 +730,6 @@
         }
         if(  node.GetRight()->GetElement() != NULL && node.GetRight() != node.GetRight()->GetRight() ){
             
-            
             CGRect rightFrame = CGRectMake(frame.origin.x+(frame.size.width/2), frame.origin.y+NODE_HEIGHT + NODE_SPACING, frame.size.width/2, NODE_HEIGHT + NODE_SPACING);
             
             if (searchedValue > node.GetElement().getData()) {
@@ -744,13 +741,9 @@
             }
             
         }
-        
         if ((node.GetLeft() == node.GetLeft()->GetLeft() && node.GetElement().getData() > searchedValue) ||
             (node.GetRight() == node.GetRight()->GetRight() && node.GetElement().getData() < searchedValue)
             ) {
-            
-            NSLog(@"node data : %d", node.GetElement().getData());
-            NSLog(@"searchedvalue : %d", searchedValue);
             
             UIAlertController * alert = [UIAlertController
                                          alertControllerWithTitle:@"Nó não encontrado"

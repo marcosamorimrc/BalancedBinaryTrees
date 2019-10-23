@@ -1,17 +1,17 @@
 //
-//  AVLMaster.m
+//  SplayMaster.m
 //  Arvores
 //
 //  Created by Marcos Amorim on 29/08/19.
 //  Copyright © 2019 Marcos Amorim. All rights reserved.
 //
 
-#import "AVLMaster.h"
-#import "AVLDetail.h"
+#import "SplayMaster.h"
+#import "SplayDetail.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate.h"
 
-#include "AVLTree.h"
+#include "Splay.h"
 #include "utlIterate.h"
 #include "Ordered.h"
 #include "TreeNode.h"
@@ -19,7 +19,7 @@
 #include "Hash.h"
 #include "Heap.h"
 
-@interface AVLMaster ()<UITextFieldDelegate, UISplitViewControllerDelegate>{
+@interface SplayMaster ()<UITextFieldDelegate, UISplitViewControllerDelegate>{
     
     
     BOOL isFirstTimeAppearing;
@@ -32,20 +32,15 @@
 }
 
 
-@property (strong) AVLDetail *AVLDetailViewController;
+@property (strong) SplayDetail *SplayDetailViewController;
 
 @end
 
-@implementation AVLMaster
+@implementation SplayMaster
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    [[self.tabBarController.tabBar.items objectAtIndex:0] setTitle:@"AVL"];
-    [[self.tabBarController.tabBar.items objectAtIndex:1] setTitle:@"RB"];
-    [[self.tabBarController.tabBar.items objectAtIndex:2] setTitle:@"AA"];
-    [[self.tabBarController.tabBar.items objectAtIndex:3] setTitle:@"SPLAY"];
     
     UITapGestureRecognizer *HideKeyboardTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
     [self.view addGestureRecognizer:HideKeyboardTapRecognizer];
@@ -97,7 +92,7 @@
     self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    _AVLDetailViewController = (AVLDetail *)[storyboard instantiateViewControllerWithIdentifier:@"AVLDetail"];
+    _SplayDetailViewController = (SplayDetail *)[storyboard instantiateViewControllerWithIdentifier:@"SplayDetail"];
 }
 
 - (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController{
@@ -115,14 +110,14 @@
     
     if (isFirstTimeAppearing) {
         self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
+        
+        CGRect frame = CGRectMake(_contentView.frame.origin.x, (self.view.frame.size.height - CONTENT_VIEW_HEIGHT_SMALL)/2, _contentView.frame.size.width, CONTENT_VIEW_HEIGHT_SMALL);
+        
+        _contentView.frame = frame;
+        
         CONTENT_VIEW_Y = _contentView.frame.origin.y;
         CONTENT_VIEW_HEIGHT = _contentView.frame.size.height;
         isFirstTimeAppearing = false;
-        
-//        UIView *underLine = [[UIView alloc] initWithFrame:CGRectMake(_txtSearch.frame.origin.x, _txtSearch.frame.origin.y+_txtSearch.frame.size.height-3, _txtSearch.frame.size.width, 1)];
-//        underLine.backgroundColor = [UIColor darkGrayColor];
-//        [_contentView addSubview:underLine];
-        
     }
     
 }
@@ -143,7 +138,6 @@
         _btnUndo.hidden = true;
         _btnInfo.hidden = true;
         _btnDeleteTree.hidden = true;
-        _btnHelp.hidden = true;
     }
     
     [UIView animateWithDuration:0.5f animations:^{
@@ -164,7 +158,6 @@
         _btnUndo.hidden = false;
         _btnInfo.hidden = false;
         _btnDeleteTree.hidden = false;
-        _btnHelp.hidden = false;
     }
     
 }
@@ -201,15 +194,15 @@
         
         if (self.splitViewController.viewControllers.count > 1) {
             _btnSearch.tag = value;
-            AVLDetail *detail = self.splitViewController.viewControllers.lastObject;
+            SplayDetail *detail = self.splitViewController.viewControllers.lastObject;
             [detail performSelector:@selector(SearchNode:) withObject:sender];
             
         }else{
             if ([self.navigationController.viewControllers.lastObject isEqual:self]) {
                 
                 _btnSearch.tag = value;
-                [self.navigationController pushViewController:_AVLDetailViewController animated:true];
-                [_AVLDetailViewController performSelector:@selector(SearchNode:) withObject:sender];
+                [self.navigationController pushViewController:_SplayDetailViewController animated:true];
+                [_SplayDetailViewController performSelector:@selector(SearchNode:) withObject:sender];
                 
             }
         }
@@ -240,28 +233,28 @@
     
     //    [self hideKeyboard:nil];
     
-//    int value = [_txtInsert.text integerValue];
-//    _txtInsert.text = @"";
-
+    //    int value = [_txtInsert.text integerValue];
+    //    _txtInsert.text = @"";
+    
     
     int value = [_txtSearch.text integerValue];
     _txtSearch.text = @"";
-
+    
     if (value > 0) {
         
         _btnUndo.enabled = true;
         
         if (self.splitViewController.viewControllers.count > 1) {
             _btnInsert.tag = value;
-            AVLDetail *detail = self.splitViewController.viewControllers.lastObject;
+            SplayDetail *detail = self.splitViewController.viewControllers.lastObject;
             [detail performSelector:@selector(InsertNode:) withObject:sender];
         }
         else{
             if ([self.navigationController.viewControllers.lastObject isEqual:self]) {
                 
                 _btnInsert.tag = value;
-                [_AVLDetailViewController performSelector:@selector(InsertNode:) withObject:sender];
-                [self.navigationController pushViewController:_AVLDetailViewController animated:true];
+                [_SplayDetailViewController performSelector:@selector(InsertNode:) withObject:sender];
+                [self.navigationController pushViewController:_SplayDetailViewController animated:true];
                 
             }
         }
@@ -290,8 +283,8 @@
     
     [self hideKeyboard:nil];
     
-//    int value = [_txtRandomTree.text integerValue];
-//    _txtRandomTree.text = @"";
+    //    int value = [_txtRandomTree.text integerValue];
+    //    _txtRandomTree.text = @"";
     
     int value = [_txtSearch.text integerValue];
     _txtSearch.text = @"";
@@ -303,15 +296,15 @@
         if (self.splitViewController.viewControllers.count > 1) {
             self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
             _btnRandomTree.tag = value;
-            AVLDetail *detail = self.splitViewController.viewControllers.lastObject;
+            SplayDetail *detail = self.splitViewController.viewControllers.lastObject;
             [detail performSelector:@selector(GenerateRandomTree:) withObject:sender];
             _btnUndo.enabled = true;
         }else{
             if ([self.navigationController.viewControllers.lastObject isEqual:self]) {
                 
                 _btnRandomTree.tag = value;
-                [_AVLDetailViewController performSelector:@selector(GenerateRandomTree:) withObject:sender];
-                [self.navigationController pushViewController:_AVLDetailViewController animated:true];
+                [_SplayDetailViewController performSelector:@selector(GenerateRandomTree:) withObject:sender];
+                [self.navigationController pushViewController:_SplayDetailViewController animated:true];
                 
             }
         }
@@ -341,12 +334,12 @@
     
     if (self.splitViewController.viewControllers.count > 1) {
         _btnUndo.enabled = false;
-        AVLDetail *detail = self.splitViewController.viewControllers.lastObject;
+        SplayDetail *detail = self.splitViewController.viewControllers.lastObject;
         [detail performSelector:@selector(UndoChanges) withObject:nil];
     }else{
         if ([self.navigationController.viewControllers.lastObject isEqual:self]) {
-            [_AVLDetailViewController performSelector:@selector(UndoChanges) withObject:sender];
-            [self.navigationController pushViewController:_AVLDetailViewController animated:true];
+            [_SplayDetailViewController performSelector:@selector(UndoChanges) withObject:sender];
+            [self.navigationController pushViewController:_SplayDetailViewController animated:true];
         }
     }
     
@@ -355,12 +348,12 @@
 - (IBAction)btnInfo:(id)sender {
     
     if (self.splitViewController.viewControllers.count > 1) {
-        AVLDetail *detail = self.splitViewController.viewControllers.lastObject;
+        SplayDetail *detail = self.splitViewController.viewControllers.lastObject;
         [detail performSelector:@selector(showTreeInfo) withObject:nil];
     }else{
         if ([self.navigationController.viewControllers.lastObject isEqual:self]) {
-            [self.navigationController pushViewController:_AVLDetailViewController animated:true];
-            [_AVLDetailViewController performSelector:@selector(showTreeInfo) withObject:sender];
+            [self.navigationController pushViewController:_SplayDetailViewController animated:true];
+            [_SplayDetailViewController performSelector:@selector(showTreeInfo) withObject:sender];
         }
     }
     
@@ -369,12 +362,12 @@
 - (IBAction)btnDeleteTree:(id)sender {
     
     if (self.splitViewController.viewControllers.count > 1) {
-        AVLDetail *detail = self.splitViewController.viewControllers.lastObject;
+        SplayDetail *detail = self.splitViewController.viewControllers.lastObject;
         [detail performSelector:@selector(deleteTree) withObject:nil];
     }else{
         if ([self.navigationController.viewControllers.lastObject isEqual:self]) {
-            [self.navigationController pushViewController:_AVLDetailViewController animated:true];
-            [_AVLDetailViewController performSelector:@selector(deleteTree) withObject:sender];
+            [self.navigationController pushViewController:_SplayDetailViewController animated:true];
+            [_SplayDetailViewController performSelector:@selector(deleteTree) withObject:sender];
         }
     }
 }
@@ -386,7 +379,7 @@
         
         self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
         
-        AVLDetail *detail = self.splitViewController.viewControllers.lastObject;
+        SplayDetail *detail = self.splitViewController.viewControllers.lastObject;
         [detail performSelector:@selector(showHelpModal) withObject:nil];
     }else{
         
@@ -398,6 +391,5 @@
     }
     
 }
-
 
 @end

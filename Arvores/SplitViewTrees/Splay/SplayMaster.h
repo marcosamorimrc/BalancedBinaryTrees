@@ -1,8 +1,8 @@
 //
-//  AVLMaster.h
+//  SplayMaster.h
 //  Arvores
 //
-//  Created by Marcos Amorim on 29/08/19.
+//  Created by Marcos Amorim on 23/10/19.
 //  Copyright © 2019 Marcos Amorim. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AVLMaster : UIViewController
+@interface SplayMaster : UIViewController
 
 @property (weak, nonatomic) IBOutlet UILabel *lblTree;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
@@ -27,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UIButton *btnInfo;
 @property (weak, nonatomic) IBOutlet UIButton *btnDeleteTree;
 @property (weak, nonatomic) IBOutlet UIButton *btnHelp;
+
 
 - (void)EnableUndoButton;
 
