@@ -69,7 +69,7 @@
     NODE_HEIGHT = NODE_HEIGHT_REGULAR;
     NODE_SPACING = NODE_SPACING_REGULAR;
     
-    UITapGestureRecognizer * showMasterRecognizer=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showMaster:)];
+    UISwipeGestureRecognizer * showMasterRecognizer=[[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(showMaster:)];
     [self.view addGestureRecognizer:showMasterRecognizer];
     
     if (self.splitViewController.viewControllers.count > 1) {
@@ -109,9 +109,11 @@
     }
 }
 
-- (void)showMaster:(UITapGestureRecognizer*)sender {
+- (void)showMaster:(UISwipeGestureRecognizer*)sender {
     
-    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
+    if (sender.direction == UISwipeGestureRecognizerDirectionRight) {
+        self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
+    }
 }
 
 - (IBAction)btnBack:(id)sender {
@@ -131,6 +133,9 @@
 
 
 - (IBAction)SearchNode:(UIButton*)sender {
+    
+    CGFloat oldZoomScale = _treeScrollView.zoomScale;
+    CGPoint oldOffset = _treeScrollView.contentOffset;
     
     _treeScrollView.zoomScale = 1;
     
@@ -208,10 +213,15 @@
     
     [self drawNodeInSearch:*root :frame :value];
     
+    _treeScrollView.zoomScale = oldZoomScale;
+    _treeScrollView.contentOffset = oldOffset;
 }
 
 
 - (IBAction)InsertNode:(UIButton*)sender {
+    
+    CGFloat oldZoomScale = _treeScrollView.zoomScale;
+    CGPoint oldOffset = _treeScrollView.contentOffset;
     
     _treeScrollView.zoomScale = 1;
     
@@ -266,6 +276,8 @@
     
     [self drawTree:*root];
     
+    _treeScrollView.zoomScale = oldZoomScale;
+    _treeScrollView.contentOffset = oldOffset;
 }
 
 
@@ -333,6 +345,11 @@
 
 - (IBAction)UndoChanges{
     
+    CGFloat oldZoomScale = _treeScrollView.zoomScale;
+    CGPoint oldOffset = _treeScrollView.contentOffset;
+    
+    _treeScrollView.zoomScale = 1;
+    
     tree = previousTree;
     
     for (UIView *view in _treeZoomSubView.subviews) {
@@ -372,7 +389,12 @@
         _treeScrollView.contentOffset = CGPointMake((_treeScrollView.contentSize.width-_treeScrollView.frame.size.width)/2, 0);
     }
     
-    [self drawTree:*root];
+    if (h >= 0) {
+        [self drawTree:*root];
+    }
+    
+    _treeScrollView.zoomScale = oldZoomScale;
+    _treeScrollView.contentOffset = oldOffset;
     
 }
 
@@ -443,6 +465,9 @@
 
 -(void)deleteNode:(int) value{
     
+    CGFloat oldZoomScale = _treeScrollView.zoomScale;
+    CGPoint oldOffset = _treeScrollView.contentOffset;
+    
     _treeScrollView.zoomScale = 1;
     
     tree.Remove(value);
@@ -484,8 +509,12 @@
         _treeScrollView.contentOffset = CGPointMake((_treeScrollView.contentSize.width-_treeScrollView.frame.size.width)/2, 0);
     }
     
-    [self drawTree:*root];
+    if (h >= 0) {
+        [self drawTree:*root];
+    }
     
+    _treeScrollView.zoomScale = oldZoomScale;
+    _treeScrollView.contentOffset = oldOffset;
 }
 
 - (void)tapToDeleteNode:(UITapGestureRecognizer *)recognizer
@@ -586,6 +615,9 @@
 
 -(void) updateTree{
     
+    CGFloat oldZoomScale = _treeScrollView.zoomScale;
+    CGPoint oldOffset = _treeScrollView.contentOffset;
+    
     _treeScrollView.zoomScale = 1;
     
     for (UIView *view in _treeZoomSubView.subviews) {
@@ -627,6 +659,8 @@
     
     [self drawTree:*root];
     
+    _treeScrollView.zoomScale = oldZoomScale;
+    _treeScrollView.contentOffset = oldOffset;
 }
 
 -(void)drawTree:(BinNode<TreeNode, compare_to<TreeNode>>)root{
