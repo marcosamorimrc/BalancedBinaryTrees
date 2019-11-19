@@ -110,6 +110,7 @@ CGFloat NODE_SPACING;
     }
 }
 
+
 - (void)showMaster:(UISwipeGestureRecognizer*)sender {
     
     if (sender.direction == UISwipeGestureRecognizerDirectionRight) {

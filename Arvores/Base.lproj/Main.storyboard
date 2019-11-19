@@ -109,7 +109,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.0" green="0.18920264619999999" blue="0.41949776259999999" alpha="0.94999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.18920264619999999" blue="0.41949776259999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f28-wq-uFa">
                                 <rect key="frame" x="223" y="674" width="74" height="74"/>
@@ -145,7 +145,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.0" green="0.18920264619999999" blue="0.41949776259999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="AU1-pr-6zp"/>
                     </view>
                     <navigationItem key="navigationItem" id="gA5-Tz-N0t"/>
@@ -790,11 +790,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Svf-Kg-Fkd">
-                                <rect key="frame" x="2" y="16" width="702" height="752"/>
+                                <rect key="frame" x="2" y="16" width="701" height="752"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0IP-MJ-Iny">
-                                        <rect key="frame" x="0.0" y="0.0" width="702" height="752"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="701" height="752"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </view>
                                 </subviews>
@@ -1000,7 +1000,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.0" green="0.18920264619999999" blue="0.41949776259999999" alpha="0.94999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.18920264619999999" blue="0.41949776259999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mcE-sZ-UEY">
                                 <rect key="frame" x="223" y="674" width="74" height="74"/>
@@ -1036,7 +1036,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.0" green="0.18920264619999999" blue="0.41949776259999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="UI5-B0-mVf"/>
                     </view>
                     <navigationItem key="navigationItem" id="F9Z-gr-GCV"/>
@@ -1068,11 +1068,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8Nh-1a-BiC">
-                                <rect key="frame" x="2" y="16" width="702" height="752"/>
+                                <rect key="frame" x="2" y="16" width="701" height="752"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="54H-6V-YNo">
-                                        <rect key="frame" x="0.0" y="0.0" width="702" height="752"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="701" height="752"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </view>
                                 </subviews>
@@ -1209,7 +1209,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.0" green="0.18920264619999999" blue="0.41949776259999999" alpha="0.94999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.18823529411764706" blue="0.41960784313725491" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UhM-0U-CcF">
                                 <rect key="frame" x="223" y="674" width="74" height="74"/>
@@ -1245,7 +1245,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.0" green="0.18920264619999999" blue="0.41949776259999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="U4k-W4-ryy"/>
                     </view>
                     <navigationItem key="navigationItem" id="dFz-pK-od3"/>
@@ -1277,11 +1277,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zyf-5L-P2g">
-                                <rect key="frame" x="2" y="16" width="702" height="752"/>
+                                <rect key="frame" x="2" y="16" width="701" height="752"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NtF-6w-Bp0">
-                                        <rect key="frame" x="0.0" y="0.0" width="702" height="752"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="701" height="752"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </view>
                                 </subviews>
@@ -1418,7 +1418,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.0" green="0.18920264619999999" blue="0.41949776259999999" alpha="0.94999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.18920264619999999" blue="0.41949776259999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XV5-p5-ApY">
                                 <rect key="frame" x="223" y="674" width="74" height="74"/>
@@ -1454,7 +1454,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.0" green="0.18920264619999999" blue="0.41949776259999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="HyV-ht-Bxr"/>
                     </view>
                     <navigationItem key="navigationItem" id="nSB-t1-Ywp"/>
@@ -1486,11 +1486,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4pd-Sb-pKd">
-                                <rect key="frame" x="2" y="16" width="702" height="752"/>
+                                <rect key="frame" x="2" y="16" width="701" height="752"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bte-w5-N4i">
-                                        <rect key="frame" x="0.0" y="0.0" width="702" height="752"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="701" height="752"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </view>
                                 </subviews>
@@ -1546,7 +1546,7 @@
         <image name="baseline_undo_white_18dp" width="36" height="36"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="iGm-d6-koZ"/>
+        <segue reference="yXD-IM-76m"/>
         <segue reference="0I5-SF-4GH"/>
         <segue reference="Xfo-IK-Ptz"/>
         <segue reference="47H-n3-sL0"/>
