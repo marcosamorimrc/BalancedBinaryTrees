@@ -69,7 +69,8 @@
     NODE_HEIGHT = NODE_HEIGHT_REGULAR;
     NODE_SPACING = NODE_SPACING_REGULAR;
     
-    UISwipeGestureRecognizer * showMasterRecognizer=[[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(showMaster:)];
+    UIScreenEdgePanGestureRecognizer * showMasterRecognizer=[[UIScreenEdgePanGestureRecognizer alloc]initWithTarget:self action:@selector(showMaster:)];
+    [showMasterRecognizer setEdges:UIRectEdgeLeft];
     [self.view addGestureRecognizer:showMasterRecognizer];
     
     if (self.splitViewController.viewControllers.count > 1) {
@@ -109,9 +110,9 @@
     }
 }
 
-- (void)showMaster:(UISwipeGestureRecognizer*)sender {
+- (void)showMaster:(UIScreenEdgePanGestureRecognizer*)sender {
     
-    if (sender.direction == UISwipeGestureRecognizerDirectionRight) {
+    if (sender.edges == UIRectEdgeLeft) {
         self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
     }
 }

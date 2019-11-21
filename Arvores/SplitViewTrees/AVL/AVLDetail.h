@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)InsertNode:(UIButton*)sender;
 -(void)GenerateRandomTree:(UIButton*)sender;
 
+-(void)updateTree;
 -(IBAction)UndoChanges;
 -(void)deleteTree;
 -(void)showHelpModal;

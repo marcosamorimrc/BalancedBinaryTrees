@@ -70,8 +70,12 @@ CGFloat NODE_SPACING;
     NODE_HEIGHT = NODE_HEIGHT_REGULAR;
     NODE_SPACING = NODE_SPACING_REGULAR;
     
-    UISwipeGestureRecognizer * showMasterRecognizer=[[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(showMaster:)];
+    UIScreenEdgePanGestureRecognizer * showMasterRecognizer=[[UIScreenEdgePanGestureRecognizer alloc]initWithTarget:self action:@selector(showMaster:)];
+    [showMasterRecognizer setEdges:UIRectEdgeLeft];
     [self.view addGestureRecognizer:showMasterRecognizer];
+    
+    UITapGestureRecognizer * hideKeyboardRecognizer=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hideKeyboard)];
+    [self.view addGestureRecognizer:hideKeyboardRecognizer];
     
     if (self.splitViewController.viewControllers.count > 1) {
         _btnBack.hidden = true;
@@ -111,11 +115,19 @@ CGFloat NODE_SPACING;
 }
 
 
-- (void)showMaster:(UISwipeGestureRecognizer*)sender {
-    
-    if (sender.direction == UISwipeGestureRecognizerDirectionRight) {
+- (void)showMaster:(UIScreenEdgePanGestureRecognizer*)sender {
+
+    if (sender.edges == UIRectEdgeLeft) {
         self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
     }
+}
+
+-(void)hideKeyboard{
+    
+    UINavigationController *navVC = (UINavigationController *)(self.splitViewController.viewControllers.firstObject) ;
+    AVLMaster *master = navVC.viewControllers.firstObject;
+    [master performSelector:@selector(hideKeyboard) withObject:nil];
+    
 }
 
 - (IBAction)btnBack:(id)sender {
@@ -196,7 +208,7 @@ CGFloat NODE_SPACING;
         _treeScrollView.contentOffset = CGPointMake((_treeScrollView.contentSize.width-_treeScrollView.frame.size.width)/2, 0);
     }
     
-    CGRect frame = CGRectMake(0, 0, _treeScrollView.contentSize.width, NODE_HEIGHT + NODE_SPACING);
+    CGRect frame = CGRectMake(0, 16, _treeScrollView.contentSize.width, NODE_HEIGHT + NODE_SPACING);
     
     [self drawNodeInSearch:*root :frame :value];
     
@@ -648,7 +660,7 @@ CGFloat NODE_SPACING;
 
 -(void)drawTree:(BinNode<TreeNode, compare_to<TreeNode>>)root{
     
-    CGRect frame = CGRectMake(0, 0, _treeScrollView.contentSize.width, NODE_HEIGHT + NODE_SPACING);
+    CGRect frame = CGRectMake(0, 16, _treeScrollView.contentSize.width, NODE_HEIGHT + NODE_SPACING);
     
     [self drawNode:root :frame];
     

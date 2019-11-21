@@ -47,7 +47,11 @@
     [[self.tabBarController.tabBar.items objectAtIndex:2] setTitle:@"AA"];
     [[self.tabBarController.tabBar.items objectAtIndex:3] setTitle:@"SPLAY"];
     
-    UITapGestureRecognizer *HideKeyboardTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
+    UISwipeGestureRecognizer *HideMaster = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(hideMaster:)];
+    HideMaster.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self.view addGestureRecognizer:HideMaster];
+    
+    UITapGestureRecognizer *HideKeyboardTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
     [self.view addGestureRecognizer:HideKeyboardTapRecognizer];
     
     CONTENT_VIEW_Y_SMALL = 75;
@@ -94,7 +98,8 @@
     [super awakeFromNib];
     
     self.splitViewController.delegate = self;
-    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
+    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
+
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     _AVLDetailViewController = (AVLDetail *)[storyboard instantiateViewControllerWithIdentifier:@"AVLDetail"];
@@ -114,20 +119,40 @@
 - (void)viewDidAppear:(BOOL)animated{
     
     if (isFirstTimeAppearing) {
-        self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
+        self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
         CONTENT_VIEW_Y = _contentView.frame.origin.y;
         CONTENT_VIEW_HEIGHT = _contentView.frame.size.height;
         isFirstTimeAppearing = false;
         
-//        UIView *underLine = [[UIView alloc] initWithFrame:CGRectMake(_txtSearch.frame.origin.x, _txtSearch.frame.origin.y+_txtSearch.frame.size.height-3, _txtSearch.frame.size.width, 1)];
-//        underLine.backgroundColor = [UIColor darkGrayColor];
-//        [_contentView addSubview:underLine];
+    }
+    
+    
+    if (self.splitViewController.preferredDisplayMode != UISplitViewControllerDisplayModeAllVisible) {
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(showMaster) object:nil];
+        [self performSelector:@selector(showMaster) withObject:nil afterDelay:0.01];
         
+    }
+}
+
+-(void)showMaster{
+    
+    if (self.splitViewController.preferredDisplayMode != UISplitViewControllerDisplayModeAllVisible) {
+        self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
     }
     
 }
 
-- (void)hideKeyboard:(UITapGestureRecognizer*)sender {
+
+- (void)hideMaster:(UISwipeGestureRecognizer*)sender {
+    
+    if (sender.direction == UISwipeGestureRecognizerDirectionLeft) {
+        [UIView animateWithDuration:0.5f animations:^{
+            self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
+        }];
+    }
+}
+
+- (void)hideKeyboard{
     
     [_txtSearch resignFirstResponder];
     [_txtInsert resignFirstResponder];
@@ -192,7 +217,7 @@
 
 - (IBAction)btnSearch:(id)sender {
     
-    [self hideKeyboard:nil];
+    [self hideKeyboard];
     
     int value = [_txtSearch.text integerValue];
     _txtSearch.text = @"";
@@ -236,13 +261,6 @@
 }
 
 - (IBAction)btnInsert:(id)sender {
-    
-    
-    //    [self hideKeyboard:nil];
-    
-//    int value = [_txtInsert.text integerValue];
-//    _txtInsert.text = @"";
-
     
     int value = [_txtSearch.text integerValue];
     _txtSearch.text = @"";
@@ -288,10 +306,7 @@
 
 - (IBAction)btnGenerateTree:(id)sender {
     
-    [self hideKeyboard:nil];
-    
-//    int value = [_txtRandomTree.text integerValue];
-//    _txtRandomTree.text = @"";
+    [self hideKeyboard];
     
     int value = [_txtSearch.text integerValue];
     _txtSearch.text = @"";
@@ -301,7 +316,11 @@
         _btnUndo.enabled = true;
         
         if (self.splitViewController.viewControllers.count > 1) {
-            self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
+            
+            [UIView animateWithDuration:0.5f animations:^{
+                self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
+            }];
+            
             _btnRandomTree.tag = value;
             AVLDetail *detail = self.splitViewController.viewControllers.lastObject;
             [detail performSelector:@selector(GenerateRandomTree:) withObject:sender];
