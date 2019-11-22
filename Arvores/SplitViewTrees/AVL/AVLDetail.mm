@@ -117,7 +117,7 @@ CGFloat NODE_SPACING;
 
 - (void)showMaster:(UIScreenEdgePanGestureRecognizer*)sender {
 
-    if (sender.edges == UIRectEdgeLeft) {
+    if (sender.edges == UIRectEdgeLeft && sender.state == 1) {
         self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
     }
 }
@@ -450,6 +450,12 @@ CGFloat NODE_SPACING;
     
     previousTree = tree;
     tree.MakeEmpty();
+    
+    UINavigationController *navVC = (UINavigationController *)(self.splitViewController.viewControllers.firstObject) ;
+    AVLMaster *master = navVC.viewControllers.firstObject;
+    [master performSelector:@selector(EnableUndoButton) withObject:nil];
+    
+    _treeScrollView.zoomScale = 1;
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate.nodeArray removeAllObjects];

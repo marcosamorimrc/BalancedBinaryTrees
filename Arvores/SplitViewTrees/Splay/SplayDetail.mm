@@ -73,6 +73,9 @@
     [showMasterRecognizer setEdges:UIRectEdgeLeft];
     [self.view addGestureRecognizer:showMasterRecognizer];
     
+    UITapGestureRecognizer * hideKeyboardRecognizer=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hideKeyboard)];
+    [self.view addGestureRecognizer:hideKeyboardRecognizer];
+    
     if (self.splitViewController.viewControllers.count > 1) {
         _btnBack.hidden = true;
     }
@@ -112,9 +115,17 @@
 
 - (void)showMaster:(UIScreenEdgePanGestureRecognizer*)sender {
     
-    if (sender.edges == UIRectEdgeLeft) {
+    if (sender.edges == UIRectEdgeLeft && sender.state == 1) {
         self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
     }
+}
+
+-(void)hideKeyboard{
+    
+    UINavigationController *navVC = (UINavigationController *)(self.splitViewController.viewControllers.firstObject) ;
+    SplayMaster *master = navVC.viewControllers.firstObject;
+    [master performSelector:@selector(hideKeyboard) withObject:nil];
+    
 }
 
 - (IBAction)btnBack:(id)sender {
@@ -210,7 +221,7 @@
         _treeScrollView.contentOffset = CGPointMake((_treeScrollView.contentSize.width-_treeScrollView.frame.size.width)/2, 0);
     }
     
-    CGRect frame = CGRectMake(0, 0, _treeScrollView.contentSize.width, NODE_HEIGHT + NODE_SPACING);
+    CGRect frame = CGRectMake(0, 16, _treeScrollView.contentSize.width, NODE_HEIGHT + NODE_SPACING);
     
     [self drawNodeInSearch:*root :frame :value];
     
@@ -273,7 +284,7 @@
         _treeScrollView.contentOffset = CGPointMake((_treeScrollView.contentSize.width-_treeScrollView.frame.size.width)/2, 0);
     }
     
-    CGRect frame = CGRectMake(0, 0, _treeScrollView.contentSize.width, NODE_HEIGHT + NODE_SPACING);
+    CGRect frame = CGRectMake(0, 16, _treeScrollView.contentSize.width, NODE_HEIGHT + NODE_SPACING);
     
     [self drawTree:*root];
     
@@ -454,6 +465,12 @@
     
     previousTree = tree;
     tree.MakeEmpty();
+    
+    UINavigationController *navVC = (UINavigationController *)(self.splitViewController.viewControllers.firstObject) ;
+    SplayMaster *master = navVC.viewControllers.firstObject;
+    [master performSelector:@selector(EnableUndoButton) withObject:nil];
+    
+    _treeScrollView.zoomScale = 1;
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate.nodeArray removeAllObjects];
@@ -656,7 +673,7 @@
         _treeScrollView.contentOffset = CGPointMake((_treeScrollView.contentSize.width-_treeScrollView.frame.size.width)/2, 0);
     }
     
-    CGRect frame = CGRectMake(0, 0, _treeScrollView.contentSize.width, NODE_HEIGHT + NODE_SPACING);
+    CGRect frame = CGRectMake(0, 16, _treeScrollView.contentSize.width, NODE_HEIGHT + NODE_SPACING);
     
     [self drawTree:*root];
     
@@ -666,7 +683,7 @@
 
 -(void)drawTree:(BinNode<TreeNode, compare_to<TreeNode>>)root{
     
-    CGRect frame = CGRectMake(0, 0, _treeScrollView.contentSize.width, NODE_HEIGHT + NODE_SPACING);
+    CGRect frame = CGRectMake(0, 16, _treeScrollView.contentSize.width, NODE_HEIGHT + NODE_SPACING);
     
     [self drawNode:root :frame];
     

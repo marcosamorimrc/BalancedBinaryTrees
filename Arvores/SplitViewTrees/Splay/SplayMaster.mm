@@ -42,7 +42,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    UITapGestureRecognizer *HideKeyboardTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
+    UISwipeGestureRecognizer *HideMaster = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(hideMaster:)];
+    HideMaster.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self.view addGestureRecognizer:HideMaster];
+    
+    UITapGestureRecognizer *HideKeyboardTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
     [self.view addGestureRecognizer:HideKeyboardTapRecognizer];
     
     CONTENT_VIEW_Y_SMALL = 75;
@@ -89,7 +93,7 @@
     [super awakeFromNib];
     
     self.splitViewController.delegate = self;
-    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
+    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     _SplayDetailViewController = (SplayDetail *)[storyboard instantiateViewControllerWithIdentifier:@"SplayDetail"];
@@ -109,7 +113,7 @@
 - (void)viewDidAppear:(BOOL)animated{
     
     if (isFirstTimeAppearing) {
-        self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
+        self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
         
         CGRect frame = CGRectMake(_contentView.frame.origin.x, (self.view.frame.size.height - CONTENT_VIEW_HEIGHT_SMALL)/2, _contentView.frame.size.width, CONTENT_VIEW_HEIGHT_SMALL);
         
@@ -120,9 +124,32 @@
         isFirstTimeAppearing = false;
     }
     
+    if (self.splitViewController.preferredDisplayMode != UISplitViewControllerDisplayModeAllVisible) {
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(showMaster) object:nil];
+        [self performSelector:@selector(showMaster) withObject:nil afterDelay:0.01];
+        
+    }
+    
 }
 
-- (void)hideKeyboard:(UITapGestureRecognizer*)sender {
+-(void)showMaster{
+    
+    if (self.splitViewController.preferredDisplayMode != UISplitViewControllerDisplayModeAllVisible) {
+        self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
+    }
+    
+}
+
+- (void)hideMaster:(UISwipeGestureRecognizer*)sender {
+    
+    if (sender.direction == UISwipeGestureRecognizerDirectionLeft) {
+        [UIView animateWithDuration:0.5f animations:^{
+            self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
+        }];
+    }
+}
+
+- (void)hideKeyboard {
     
     [_txtSearch resignFirstResponder];
     [_txtInsert resignFirstResponder];
@@ -185,7 +212,7 @@
 
 - (IBAction)btnSearch:(id)sender {
     
-    [self hideKeyboard:nil];
+    [self hideKeyboard];
     
     int value = [_txtSearch.text integerValue];
     _txtSearch.text = @"";
@@ -229,13 +256,6 @@
 }
 
 - (IBAction)btnInsert:(id)sender {
-    
-    
-    //    [self hideKeyboard:nil];
-    
-    //    int value = [_txtInsert.text integerValue];
-    //    _txtInsert.text = @"";
-    
     
     int value = [_txtSearch.text integerValue];
     _txtSearch.text = @"";
@@ -281,10 +301,7 @@
 
 - (IBAction)btnGenerateTree:(id)sender {
     
-    [self hideKeyboard:nil];
-    
-    //    int value = [_txtRandomTree.text integerValue];
-    //    _txtRandomTree.text = @"";
+    [self hideKeyboard];
     
     int value = [_txtSearch.text integerValue];
     _txtSearch.text = @"";
