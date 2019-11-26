@@ -108,6 +108,7 @@ CGFloat NODE_SPACING;
             for (int i = 0; i < appDelegate.nodeArray.count; i++) {
                 tree.Insert([appDelegate.nodeArray[i] integerValue]);
             }
+            _treeScrollView.contentOffset = CGPointMake(0, 0);
             [self updateTree];
             
         }
@@ -685,7 +686,6 @@ CGFloat NODE_SPACING;
         cell.viewData.tag = node.GetElement().getData();
         
         cell.viewData.frame = CGRectMake((cell.frame.size.width - NODE_WIDTH - 2)/2, 0, NODE_WIDTH-2, NODE_HEIGHT);
-        
         
         cell.viewData.layer.cornerRadius = cell.viewData.frame.size.height/2;
         

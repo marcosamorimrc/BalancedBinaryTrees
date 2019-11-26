@@ -107,6 +107,7 @@
             for (int i = 0; i < appDelegate.nodeArray.count; i++) {
                 tree.Insert([appDelegate.nodeArray[i] integerValue]);
             }
+            _treeScrollView.contentOffset = CGPointMake(0, 0);
             [self updateTree];
             
         }
@@ -691,9 +692,11 @@
         
         if (node.Color == 1) {
             cell.lblData.textColor = [UIColor whiteColor];
-            cell.lblData.backgroundColor = [UIColor blackColor];
+//            cell.lblData.backgroundColor = [UIColor blackColor];
+            cell.viewData.backgroundColor = [UIColor blackColor];
         }else{
-            cell.lblData.backgroundColor = [UIColor redColor];
+//            cell.lblData.backgroundColor = [UIColor redColor];
+            cell.viewData.backgroundColor = [UIColor redColor];
         }
         
         cell.viewData.frame = CGRectMake((cell.frame.size.width - NODE_WIDTH - 2)/2, 0, NODE_WIDTH-2, NODE_HEIGHT);
@@ -746,9 +749,11 @@
         
         if (node.Color == 1) {
             cell.lblData.textColor = [UIColor whiteColor];
-            cell.lblData.backgroundColor = [UIColor blackColor];
+//            cell.lblData.backgroundColor = [UIColor blackColor];
+            cell.viewData.backgroundColor = [UIColor blackColor];
         }else{
-            cell.lblData.backgroundColor = [UIColor redColor];
+//            cell.lblData.backgroundColor = [UIColor redColor];
+            cell.viewData.backgroundColor = [UIColor blackColor];
         }
         
         cell.viewData.frame = CGRectMake((cell.frame.size.width - NODE_WIDTH - 2)/2, 0, NODE_WIDTH-2, NODE_HEIGHT);

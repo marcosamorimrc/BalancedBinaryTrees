@@ -107,6 +107,7 @@
             for (int i = 0; i < appDelegate.nodeArray.count; i++) {
                 tree.Insert([appDelegate.nodeArray[i] integerValue]);
             }
+            _treeScrollView.contentOffset = CGPointMake(0, 0);
             [self updateTree];
             
         }
