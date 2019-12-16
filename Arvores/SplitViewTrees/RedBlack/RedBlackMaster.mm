@@ -115,9 +115,19 @@
     if (isFirstTimeAppearing) {
         self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
         
-        CGRect frame = CGRectMake(_contentView.frame.origin.x, (self.view.frame.size.height - CONTENT_VIEW_HEIGHT_SMALL)/2, _contentView.frame.size.width, CONTENT_VIEW_HEIGHT_SMALL);
-        
-        _contentView.frame = frame;
+        if (self.view.frame.size.height <= 500) {
+            
+            CGRect frame = CGRectMake(_contentView.frame.origin.x, (self.view.frame.size.height - CONTENT_VIEW_HEIGHT_SMALL - 40)/2, _contentView.frame.size.width, CONTENT_VIEW_HEIGHT_SMALL);
+            
+            _contentView.frame = frame;
+            
+        }else{
+            
+            CGRect frame = CGRectMake(_contentView.frame.origin.x, (self.view.frame.size.height - CONTENT_VIEW_HEIGHT_SMALL)/2, _contentView.frame.size.width, CONTENT_VIEW_HEIGHT_SMALL);
+            
+            _contentView.frame = frame;
+            
+        }
         
         CONTENT_VIEW_Y = _contentView.frame.origin.y;
         CONTENT_VIEW_HEIGHT = _contentView.frame.size.height;
@@ -398,10 +408,11 @@
     
     if (self.splitViewController.viewControllers.count > 1) {
         
-        self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController *modal = [storyboard instantiateViewControllerWithIdentifier:@"HelpModal"];
         
-        RedBlackDetail *detail = self.splitViewController.viewControllers.lastObject;
-        [detail performSelector:@selector(showHelpModal) withObject:nil];
+        [self presentViewController:modal animated:YES completion:nil];
+        
     }else{
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
