@@ -145,7 +145,7 @@
     
     if (self.splitViewController.preferredDisplayMode != UISplitViewControllerDisplayModeAllVisible) {
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(showMaster) object:nil];
-        [self performSelector:@selector(showMaster) withObject:nil afterDelay:0.01];
+        [self performSelector:@selector(showMaster) withObject:nil afterDelay:0.51];
         
     }
 }

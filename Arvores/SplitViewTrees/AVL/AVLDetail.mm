@@ -64,6 +64,8 @@ CGFloat NODE_SPACING;
     _treeScrollView.maximumZoomScale = 4;
     _treeScrollView.minimumZoomScale = 0.03;
     
+    _treeZoomSubView.frame = CGRectMake(0, 0, _treeScrollView.frame.size.width, _treeScrollView.frame.size.height);
+    
     _btnBack.layer.cornerRadius = 6;
     
     NODE_WIDTH = NODE_WIDTH_REGULAR;
@@ -119,7 +121,9 @@ CGFloat NODE_SPACING;
 - (void)showMaster:(UIScreenEdgePanGestureRecognizer*)sender {
 
     if (sender.edges == UIRectEdgeLeft && sender.state == 1) {
-        self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
+        [UIView animateWithDuration:0.5f animations:^{
+            self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
+        }];
     }
 }
 
@@ -145,7 +149,6 @@ CGFloat NODE_SPACING;
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale
 {
 }
-
 
 - (IBAction)SearchNode:(UIButton*)sender {
     
