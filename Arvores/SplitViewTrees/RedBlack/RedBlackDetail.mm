@@ -757,8 +757,10 @@
             cell.viewData.backgroundColor = [UIColor blackColor];
         }else{
 //            cell.lblData.backgroundColor = [UIColor redColor];
-            cell.viewData.backgroundColor = [UIColor blackColor];
+            cell.viewData.backgroundColor = [UIColor redColor];
         }
+        
+        
         
         cell.viewData.frame = CGRectMake((cell.frame.size.width - NODE_WIDTH - 2)/2, 0, NODE_WIDTH-2, NODE_HEIGHT);
         cell.viewData.layer.cornerRadius = cell.viewData.frame.size.height/2;
