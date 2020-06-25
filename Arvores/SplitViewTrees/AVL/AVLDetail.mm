@@ -85,6 +85,31 @@ CGFloat NODE_SPACING;
     
 }
 
+-(void)viewWillDisappear:(BOOL)animated{
+    
+    for (UISplitViewController *svc in self.tabBarController.viewControllers) {
+        
+        if (![svc isEqual:self.splitViewController]) {
+            UIViewController *vc = svc.viewControllers.lastObject;
+            if (![vc isKindOfClass:UINavigationController.class]) {
+                if (self.splitViewController.preferredDisplayMode == UISplitViewControllerDisplayModeAllVisible) {
+                    [vc performSelector:@selector(instantShowMaster) withObject:nil];
+                }else{
+                    [vc performSelector:@selector(instantHideMaster) withObject:nil];
+                }
+            }
+        }
+    }
+}
+
+-(void)instantHideMaster{
+    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
+}
+
+-(void)instantShowMaster{
+    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
+}
+
 -(void)viewDidAppear:(BOOL)animated{
     
     if (isFirstTimeAppearing) {

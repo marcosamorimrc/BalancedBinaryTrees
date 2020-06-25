@@ -27,6 +27,9 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)deleteTree;
 -(void)showHelpModal;
 
+-(void)instantHideMaster;
+-(void)instantShowMaster;
+
 @end
 
 NS_ASSUME_NONNULL_END

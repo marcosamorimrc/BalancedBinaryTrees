@@ -73,6 +73,26 @@
     _txtInsert.delegate = self;
     _txtRandomTree.delegate = self;
     
+    if (self.splitViewController.viewControllers.count <= 1) {
+        
+        UIToolbar* keyboardToolbar = [[UIToolbar alloc] init];
+        [keyboardToolbar sizeToFit];
+        UIBarButtonItem *flexBarButton = [[UIBarButtonItem alloc]
+                                          initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                          target:nil action:nil];
+        UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc]
+                                          initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                          target:self action:@selector(hideKeyboard)];
+        keyboardToolbar.items = @[flexBarButton, doneBarButton];
+        _txtSearch.inputAccessoryView = keyboardToolbar;
+        _txtInsert.inputAccessoryView = keyboardToolbar;
+        
+        _btnUndo.frame = CGRectMake(_btnUndo.frame.origin.x, _btnUndo.frame.origin.y + (_btnUndo.frame.size.height/2), _btnUndo.frame.size.width, _btnUndo.frame.size.height);
+        _btnInfo.frame = CGRectMake(_btnInfo.frame.origin.x, _btnInfo.frame.origin.y + (_btnInfo.frame.size.height/2), _btnInfo.frame.size.width, _btnInfo.frame.size.height);
+        _btnDeleteTree.frame = CGRectMake(_btnDeleteTree.frame.origin.x, _btnDeleteTree.frame.origin.y + (_btnDeleteTree.frame.size.height/2), _btnDeleteTree.frame.size.width, _btnDeleteTree.frame.size.height);
+        
+    }
+    
     isFirstTimeAppearing = true;
     
     self.navigationController.navigationBar.hidden = true;

@@ -84,6 +84,31 @@
     
 }
 
+-(void)viewWillDisappear:(BOOL)animated{
+    
+    for (UISplitViewController *svc in self.tabBarController.viewControllers) {
+        
+        if (![svc isEqual:self.splitViewController]) {
+            UIViewController *vc = svc.viewControllers.lastObject;
+            if (![vc isKindOfClass:UINavigationController.class]) {
+                if (self.splitViewController.preferredDisplayMode == UISplitViewControllerDisplayModeAllVisible) {
+                    [vc performSelector:@selector(instantShowMaster) withObject:nil];
+                }else{
+                    [vc performSelector:@selector(instantHideMaster) withObject:nil];
+                }
+            }
+        }
+    }
+}
+
+-(void)instantHideMaster{
+    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
+}
+
+-(void)instantShowMaster{
+    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
+}
+
 -(void)viewDidAppear:(BOOL)animated{
     
     if (isFirstTimeAppearing) {
@@ -759,8 +784,6 @@
 //            cell.lblData.backgroundColor = [UIColor redColor];
             cell.viewData.backgroundColor = [UIColor redColor];
         }
-        
-        
         
         cell.viewData.frame = CGRectMake((cell.frame.size.width - NODE_WIDTH - 2)/2, 0, NODE_WIDTH-2, NODE_HEIGHT);
         cell.viewData.layer.cornerRadius = cell.viewData.frame.size.height/2;
