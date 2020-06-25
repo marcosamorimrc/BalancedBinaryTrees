@@ -176,6 +176,10 @@
             self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
         }];
     }
+    
+    if (self.splitViewController.viewControllers.count <= 1) {
+        [self.navigationController pushViewController:_AADetailViewController animated:true];
+    }
 }
 
 - (void)hideKeyboard{
